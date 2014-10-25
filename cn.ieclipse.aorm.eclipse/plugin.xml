@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension point="org.eclipse.ui.popupMenus">
+		<objectContribution objectClass="java.lang.Object"
+			id="cn.ieclipse.aorm.eclipse.contribution1">
+			<menu icon="res/ic_aorm.png" id="cn.ieclipse.aorm.eclipse.menu1"
+				label="%menu.label" path="additions">
+				<separator name="group1">
+				</separator>
+				<separator name="group2">
+				</separator>
+				<separator name="group3">
+				</separator>
+			</menu>
+			<action class="cn.ieclipse.aorm.eclipse.popup.actions.AddLibAction"
+				icon="res/importjar_wiz.gif" id="cn.ieclipse.aorm.eclipse.popup.addLibAction"
+				label="%action.label" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group2">
+				<enablement>
+					<or>
+						<objectClass name="org.eclipse.core.resources.IProject">
+						</objectClass>
+						<objectClass name="org.eclipse.jdt.core.IJavaProject">
+						</objectClass>
+					</or>
+				</enablement>
+				<!--
+					<enablement> <objectClass
+					name="org.eclipse.core.resources.IProject"> </objectClass>
+					</enablement>
+				-->
+			</action>
+
+			<action class="cn.ieclipse.aorm.eclipse.popup.actions.GenDDLAction"
+				icon="res/sql.gif" id="cn.ieclipse.aorm.eclipse.popup.genddl" label="%action.label.0"
+				menubarPath="cn.ieclipse.aorm.eclipse.menu1/group2">
+				<enablement>
+					<or>
+						<objectClass name="org.eclipse.jdt.internal.core.CompilationUnit">
+						</objectClass>
+					</or>
+				</enablement>
+			</action>
+			<action class="cn.ieclipse.aorm.eclipse.actions.EditActivityAction"
+				enablesFor="1" icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.editActivity"
+				label="%action.label.1" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group1">
+				<enablement>
+					<objectState name="type" value="activity">
+					</objectState>
+				</enablement>
+			</action>
+			<action class="cn.ieclipse.aorm.eclipse.actions.EditProviderAction"
+				enablesFor="1" icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.editProvider"
+				label="%action.label.2" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group1">
+				<enablement>
+					<objectState name="type" value="provider">
+					</objectState>
+				</enablement>
+			</action>
+			<action class="cn.ieclipse.aorm.eclipse.actions.NewActivityAction"
+				icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.newActivity"
+				label="%action.label.3" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group3">
+			</action>
+			<action class="cn.ieclipse.aorm.eclipse.actions.NewProviderAction"
+				icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.newProvider"
+				label="%action.label.4" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group3">
+			</action>
+			<action class="cn.ieclipse.aorm.eclipse.actions.NewOrmProviderAction"
+				icon="res/android.png" id="cn.ieclipse.aorm.eclipse.popup.newOrmProvider"
+				label="%action.label.5" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group3">
+			</action>
+			<visibility>
+				<or>
+					<objectClass name="org.eclipse.jdt.core.IJavaProject">
+					</objectClass>
+					<objectClass name="org.eclipse.jdt.core.IJavaElement">
+					</objectClass>
+				</or>
+			</visibility>
+			<filter name="projectNature" value="com.android.ide.eclipse.adt.AndroidNature">
+			</filter>
+		</objectContribution>
+
+	</extension>
+	<extension point="org.eclipse.jdt.core.classpathContainerInitializer">
+		<classpathContainerInitializer id="cn.ieclipse.aorm.eclipse.LIB"
+			class="cn.ieclipse.aorm.eclipse.jdt.AormClasspathContainerInitializer" />
+
+	</extension>
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+			<newWizardShortcut
+				id="cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard" />
+			<newWizardShortcut
+				id="cn.ieclipse.aorm.eclipse.wizards.NewProviderWizard">
+			</newWizardShortcut>
+		</perspectiveExtension>
+		<perspectiveExtension targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+			<newWizardShortcut
+				id="cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard">
+			</newWizardShortcut>
+			<newWizardShortcut
+				id="cn.ieclipse.aorm.eclipse.wizards.NewProviderWizard">
+			</newWizardShortcut>
+		</perspectiveExtension>
+	</extension>
+	<extension point="org.eclipse.core.runtime.adapters">
+		<factory adaptableType="org.eclipse.jdt.core.ICompilationUnit"
+			class="cn.ieclipse.aorm.eclipse.popup.actions.EditCompAdapterFactory">
+			<adapter type="org.eclipse.ui.IActionFilter">
+			</adapter>
+		</factory>
+	</extension>
+	<extension point="org.eclipse.ui.newWizards">
+		<wizard canFinishEarly="false"
+			category="com.android.ide.eclipse.wizards.category" class="cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard"
+			finalPerspective="org.eclipse.jdt.ui.JavaPerspective" icon="res/android-16.png"
+			id="cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard" name="%wizard.name"
+			preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective" project="false">
+		</wizard>
+		<wizard canFinishEarly="false"
+			category="com.android.ide.eclipse.wizards.category" class="cn.ieclipse.aorm.eclipse.wizards.NewProviderWizard"
+			finalPerspective="org.eclipse.jdt.ui.JavaPerspective" icon="res/android-16.png"
+			id="cn.ieclipse.aorm.eclipse.wizards.NewProviderWizard" name="%wizard.name.0"
+			preferredPerspectives="org.eclipse.jdt.ui.JavaPerspective" project="false">
+		</wizard>
+		<wizard category="com.android.ide.eclipse.wizards.category"
+			class="cn.ieclipse.aorm.eclipse.wizards.NewOrmProviderWizard" icon="res/android.png"
+			id="cn.ieclipse.aorm.eclipse.wizards.NewOrmProviderWizard" name="%wizard.name.1"
+			project="false">
+		</wizard>
+	</extension>
+</plugin>

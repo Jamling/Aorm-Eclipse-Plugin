@@ -1,0 +1,21 @@
+    <provider 
+              android:name="string"
+              android:label="string resource"
+              android:icon="drawable resource"
+              android:authorities="list"
+              android:permission="string"
+              android:enabled=["true" | "false"]
+              android:exported=["true" | "false"]
+              android:grantUriPermissions=["true" | "false"]
+
+
+              android:multiprocess=["true" | "false"]
+
+
+              android:initOrder="integer"
+              android:process="string"
+              android:readPermission="string"
+              android:syncable=["true" | "false"]
+              android:writePermission="string" >
+        . . .
+    </provider>

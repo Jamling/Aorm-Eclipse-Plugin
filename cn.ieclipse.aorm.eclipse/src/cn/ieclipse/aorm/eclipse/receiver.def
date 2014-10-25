@@ -1,0 +1,13 @@
+<receiver
+          android:name="string"
+          android:label="string resource"
+          android:icon="drawable resource"
+          android:enabled=["true" | "false"]
+          android:exported=["true" | "false"]
+
+
+
+          android:permission="string"
+          android:process="string" >
+    . . .
+</receiver>

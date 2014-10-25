@@ -1,0 +1,45 @@
+<activity 
+          android:name="string"
+          android:label="string resource"
+          android:icon="drawable resource"
+          android:theme="resource or theme"
+          android:launchMode=["multiple" | "singleTop" |
+                              "singleTask" | "singleInstance"]
+          android:configChanges=["mcc", "mnc", "locale",
+                                 "touchscreen", "keyboard", "keyboardHidden",
+                                 "navigation", "screenLayout", "fontScale", "uiMode",
+                                 "orientation", "screenSize", "smallestScreenSize"]
+          android:enabled=["true" | "false"]
+          android:exported=["true" | "false"]
+          android:finishOnTaskLaunch=["true" | "false"]
+          android:excludeFromRecents=["true" | "false"]
+
+          android:clearTaskOnLaunch=["true" | "false"]
+
+
+          android:hardwareAccelerated=["true" | "false"]
+
+
+          android:noHistory=["true" | "false"]  
+          android:permission="string"
+          android:process="string"
+          android:screenOrientation=["unspecified" | "user" | "behind" |
+                                     "landscape" | "portrait" |
+                                     "reverseLandscape" | "reversePortrait" |
+                                     "sensorLandscape" | "sensorPortrait" |
+                                     "sensor" | "fullSensor" | "nosensor"]
+          android:multiprocess=["true" | "false"]
+
+          android:parentActivityName="string" 
+          android:alwaysRetainTaskState=["true" | "false"]
+          android:allowTaskReparenting=["true" | "false"]
+          android:stateNotNeeded=["true" | "false"]
+          android:taskAffinity="string"
+
+          android:uiOptions=["none" | "splitActionBarWhenNarrow"]
+          android:windowSoftInputMode=["stateUnspecified",
+                                       "stateUnchanged", "stateHidden",
+                                       "stateAlwaysHidden", "stateVisible",
+                                       "stateAlwaysVisible", "adjustUnspecified",
+                                       "adjustResize", "adjustPan"] >   
+</activity>
