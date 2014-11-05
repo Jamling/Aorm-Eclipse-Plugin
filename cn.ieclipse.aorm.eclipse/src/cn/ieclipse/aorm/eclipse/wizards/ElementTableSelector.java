@@ -69,10 +69,10 @@ public class ElementTableSelector {
     private final Button removeButton;
     private final Object[] elements;
     private final ArrayList<Model> selectedElements = new ArrayList<ElementTableSelector.Model>();
-
+    
     private final Table table;
     private final TableViewer tv;
-
+    
     public ElementTableSelector(final Composite composite, GridData gridData,
             final String groupDescr, final String selectionMessage,
             final Object[] elements) {
@@ -81,15 +81,15 @@ public class ElementTableSelector {
         intentGroup.setLayout(new GridLayout(2, false));
         intentGroup.setLayoutData(gridData);
         intentGroup.setText(groupDescr);
-
+        
         tv = new TableViewer(intentGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL
                 | SWT.FULL_SELECTION);
         table = tv.getTable();
         table.setHeaderVisible(false);
         table.setLinesVisible(true);
-
+        
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
+        
         final Menu menu = new Menu(tv.getControl());
         MenuItem add = new MenuItem(menu, SWT.PUSH);
         add.setText("&Add Custom");
@@ -101,7 +101,7 @@ public class ElementTableSelector {
                 tv.refresh();
             }
         });
-
+        
         MenuItem up = new MenuItem(menu, SWT.PUSH);
         up.setText("&Up");
         up.setImage(UP_IMG);
@@ -117,14 +117,14 @@ public class ElementTableSelector {
                         Model n = selectedElements.get(idx - 1);
                         selectedElements.set(idx, n);
                         selectedElements.set(idx - 1, m);
-
+                        
                         tv.refresh();
                     }
-
+                    
                 }
             }
         });
-
+        
         MenuItem down = new MenuItem(menu, SWT.PUSH);
         down.setText("&Down");
         down.setImage(DOWN_IMG);
@@ -140,18 +140,18 @@ public class ElementTableSelector {
                         Model n = selectedElements.get(idx + 1);
                         selectedElements.set(idx, n);
                         selectedElements.set(idx + 1, m);
-
+                        
                         tv.refresh();
                     }
-
+                    
                 }
             }
         });
-
+        
         table.setMenu(menu);
-
+        
         tv.setContentProvider(new MyContentProvider());
-
+        
         ColumnViewerToolTipSupport.enableFor(tv, ToolTip.NO_RECREATE);
         // TableViewerFocusCellManager focusCellManager = new
         // TableViewerFocusCellManager(
@@ -166,35 +166,35 @@ public class ElementTableSelector {
                         || event.eventType == ColumnViewerEditorActivationEvent.PROGRAMMATIC;
             }
         };
-
+        
         TableViewerEditor.create(tv, null, actSupport,
                 ColumnViewerEditor.TABBING_HORIZONTAL
                         | ColumnViewerEditor.TABBING_MOVE_TO_ROW_NEIGHBOR
                         | ColumnViewerEditor.TABBING_VERTICAL
                         | ColumnViewerEditor.KEYBOARD_ACTIVATION);
-
+        
         final TableViewerColumn col = new TableViewerColumn(tv, SWT.NONE);
         col.setLabelProvider(new MyCellLabelProvider());
         col.setEditingSupport(new MyEditingSupport(tv));
         // tv.getTable().
         col.getColumn().setWidth(300);
-
+        
         table.addControlListener(new ControlListener() {
-
+            
             public void controlResized(ControlEvent e) {
                 int w = table.getClientArea().width;
                 if (w > 0) {
                     col.getColumn().setWidth(w);
                 }
             }
-
+            
             public void controlMoved(ControlEvent e) {
-
+                
             }
         });
-
+        
         tv.setInput(selectedElements);
-
+        
         Composite buttonComp = new Composite(intentGroup, SWT.NONE);
         buttonComp.setLayout(new FillLayout(SWT.VERTICAL));
         addButton = new Button(buttonComp, SWT.NONE);
@@ -203,11 +203,11 @@ public class ElementTableSelector {
             public void widgetSelected(SelectionEvent e) {
                 showSelectionDialog(composite, selectionMessage);
             }
-
+            
             public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
-
+        
         removeButton = new Button(buttonComp, SWT.NONE);
         removeButton.setText("Remove...");
         removeButton.addSelectionListener(new SelectionAdapter() {
@@ -226,7 +226,7 @@ public class ElementTableSelector {
             }
         });
     }
-
+    
     private void showSelectionDialog(Composite composite,
             String selectionMessage) {
         LabelProvider labelProvider = new LabelProvider();
@@ -245,7 +245,7 @@ public class ElementTableSelector {
             tv.refresh();
         }
     }
-
+    
     private boolean addModel(Model model) {
         for (Model m : selectedElements) {
             if (m.getName().equalsIgnoreCase(model.getName())) {
@@ -254,7 +254,7 @@ public class ElementTableSelector {
         }
         return selectedElements.add(model);
     }
-
+    
     /**
      * @return selected elements
      */
@@ -265,83 +265,84 @@ public class ElementTableSelector {
         }
         return set;
     }
-
+    
     private static class Model {
         String name;
-
+        
         public Model(String name) {
             this.name = name;
         }
-
+        
         public String getName() {
             return name;
         }
-
+        
         public void setName(String name) {
             this.name = name;
         }
-
+        
         @Override
         public int hashCode() {
             return name.hashCode();
         }
-
+        
         @Override
         public String toString() {
             return getName();
         }
     }
-
+    
     private static class MyCellLabelProvider extends
             org.eclipse.jface.viewers.CellLabelProvider {
-
+        
         static Image custom = AormPlugin.getImageDescriptor(
                 ImageConstants.ACTION_CUSTOM).createImage();
         static Image system = AormPlugin.getImageDescriptor(
                 ImageConstants.ACTION_SYSTEM).createImage();
-
+        
         @Override
         public void update(ViewerCell cell) {
             cell.setText(cell.getElement().toString());
             if (cell.getElement().toString().startsWith("android.intent")) {
                 cell.setImage(system);
-            } else {
+            }
+            else {
                 cell.setImage(custom);
             }
         }
-
+        
         public String getToolTipText(Object element) {
             return "Double click to edit";
         }
-
+        
         public Point getToolTipShift(Object object) {
             return new Point(5, 5);
         }
-
+        
         public int getToolTipDisplayDelayTime(Object object) {
             return 200;
         }
-
+        
         public int getToolTipTimeDisplayed(Object object) {
             return 3000;
         }
-
+        
     }
-
+    
     private static class MyContentProvider implements
             IStructuredContentProvider {
-
+        
         public MyContentProvider() {
         }
-
+        
         public void dispose() {
             //
         }
-
+        
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
             //
         }
-
+        
         @SuppressWarnings("unchecked")
         public Object[] getElements(Object inputElement) {
             if (inputElement instanceof List<?>) {
@@ -350,34 +351,34 @@ public class ElementTableSelector {
             }
             return null;
         }
-
+        
     }
-
+    
     private static class MyEditingSupport extends EditingSupport {
         CellEditor editor;
-
+        
         public MyEditingSupport(TableViewer viewer) {
             super(viewer);
             editor = new TextCellEditor(viewer.getTable(), SWT.BORDER) {
-
+                
             };
         }
-
+        
         @Override
         protected CellEditor getCellEditor(Object element) {
             return editor;
         }
-
+        
         @Override
         protected boolean canEdit(Object element) {
             return true;
         }
-
+        
         @Override
         protected Object getValue(Object element) {
             return element.toString();
         }
-
+        
         @Override
         protected void setValue(Object element, Object value) {
             if (element instanceof Model) {
@@ -385,6 +386,6 @@ public class ElementTableSelector {
             }
             getViewer().update(element, null);
         }
-
+        
     }
 }

@@ -42,14 +42,14 @@ import cn.ieclipse.aorm.eclipse.AormPlugin;
  * 
  */
 public class IntentReflectionHelper {
-
+    
     private static final String ACTION_PREFIX = "ACTION_";
     private static final String CATEGORY_PREFIX = "CATEGORY_";
-
+    
     private final Set<String> categories = new TreeSet<String>();
     private final Set<String> actions = new TreeSet<String>();
     private final IJavaProject javaProject;
-
+    
     /**
      * Constructor.
      * 
@@ -59,7 +59,7 @@ public class IntentReflectionHelper {
     public IntentReflectionHelper(IJavaProject javaProject) {
         this.javaProject = javaProject;
     }
-
+    
     /**
      * Get the intent categories.
      * 
@@ -71,7 +71,7 @@ public class IntentReflectionHelper {
         }
         return categories;
     }
-
+    
     /**
      * Get the intent actions.
      * 
@@ -83,7 +83,7 @@ public class IntentReflectionHelper {
         }
         return actions;
     }
-
+    
     /**
      * Get categories and actions from the Intent.class
      */
@@ -101,7 +101,8 @@ public class IntentReflectionHelper {
             for (Field field : declaredFields) {
                 if (field.getName().startsWith(CATEGORY_PREFIX)) {
                     categories.add((String) field.get(null));
-                } else if (field.getName().startsWith(ACTION_PREFIX)) {
+                }
+                else if (field.getName().startsWith(ACTION_PREFIX)) {
                     actions.add((String) field.get(null));
                 }
             }
@@ -111,7 +112,7 @@ public class IntentReflectionHelper {
                     (Object[]) null);
         }
     }
-
+    
     /**
      * Get the android.jar from the classpath.
      * 
@@ -134,7 +135,7 @@ public class IntentReflectionHelper {
         }
         return result;
     }
-
+    
     /**
      * Get all classpathentries for the given project.
      * 
@@ -148,7 +149,7 @@ public class IntentReflectionHelper {
         String[] defaultClassPath = JavaRuntime
                 .computeDefaultRuntimeClassPath(javaProject);
         classPath.addAll(Arrays.asList(defaultClassPath));
-
+        
         // add CPE_CONTAINER classpathes
         IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
         for (IClasspathEntry entry : rawClasspath) {
@@ -166,5 +167,5 @@ public class IntentReflectionHelper {
         }
         return classPath.toArray(new String[] {});
     }
-
+    
 }

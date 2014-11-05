@@ -37,13 +37,13 @@ import org.eclipse.swt.widgets.TableItem;
  * 
  */
 public class MultiCheckSelector extends Dialog {
-
+    
     private Table list;
-
+    
     String[] formats;
-
+    
     String initValue;
-
+    
     /**
      * Create the dialog.
      * 
@@ -52,13 +52,13 @@ public class MultiCheckSelector extends Dialog {
     public MultiCheckSelector(Shell parentShell) {
         super(parentShell);
     }
-
+    
     public MultiCheckSelector(Shell parentShell, String[] formats, String value) {
         super(parentShell);
         this.formats = formats;
         this.initValue = value;
     }
-
+    
     /**
      * Create contents of the dialog.
      * 
@@ -67,10 +67,10 @@ public class MultiCheckSelector extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite container = (Composite) super.createDialogArea(parent);
-
+        
         list = new Table(container, SWT.BORDER | SWT.MULTI | SWT.CHECK);
         list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
+        
         List<String> values = new ArrayList<String>();
         if (initValue != null && initValue.trim().length() > 0) {
             String[] temp = initValue.split("\\|");
@@ -78,7 +78,7 @@ public class MultiCheckSelector extends Dialog {
                 values.add(str.trim());
             }
         }
-
+        
         for (int i = 0; i < formats.length; i++) {
             TableItem item = new TableItem(list, SWT.NONE);
             item.setText(formats[i]);
@@ -88,7 +88,7 @@ public class MultiCheckSelector extends Dialog {
         }
         return container;
     }
-
+    
     /**
      * Create contents of the button bar.
      * 
@@ -118,7 +118,7 @@ public class MultiCheckSelector extends Dialog {
             }
         });
     }
-
+    
     /**
      * Return the initial size of the dialog.
      */
@@ -126,7 +126,7 @@ public class MultiCheckSelector extends Dialog {
     protected Point getInitialSize() {
         return new Point(450, 300);
     }
-
+    
     public java.util.List<String> getSelection() {
         ArrayList<String> res = new ArrayList<String>();
         TableItem[] tis = list.getSelection();
@@ -135,16 +135,16 @@ public class MultiCheckSelector extends Dialog {
         }
         return res;
     }
-
+    
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
-
+    
     private Callback callback;
-
+    
     public static interface Callback {
         public void onClose();
-
+        
         public void onOkay(List<String> selections);
     }
 }

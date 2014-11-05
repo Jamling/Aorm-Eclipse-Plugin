@@ -24,13 +24,13 @@ import cn.ieclipse.aorm.eclipse.helpers.AndroidManifest;
  * @author Michael Kober
  */
 public class NewActivityWizard extends NewComponentWizard {
-
+    
     /**
      * Wizard id.
      */
     public static final String ID = AormPlugin.PLUGIN_ID
             + "wizards.NewActivityWizard";
-
+    
     /**
      * Creates a new android activity project wizard.
      */
@@ -38,7 +38,7 @@ public class NewActivityWizard extends NewComponentWizard {
         setWindowTitle("New Android Activity");
         page = new NewActivityWizardPage();
     }
-
+    
     @Override
     protected void updateManifest(AndroidManifest manifest) {
         NewActivityWizardPage newActivityPage = (NewActivityWizardPage) page;

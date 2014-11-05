@@ -39,11 +39,11 @@ import cn.ieclipse.aorm.eclipse.helpers.Status;
  */
 
 public class NewProviderWizardPage extends NewComponentWizardPage {
-
+    
     private IStatus authorityStatus;
     private Text authorityText;
     private String authority;
-
+    
     /**
      * Constructor for SampleNewWizardPage.
      * 
@@ -53,9 +53,9 @@ public class NewProviderWizardPage extends NewComponentWizardPage {
         super();
         setTitle("Android ContentProvider");
         setDescription("Create a new Android ContentProvider.");
-
+        
     }
-
+    
     @Override
     protected void createOtherControls(Composite composite, int nColumns) {
         createAuthorize(composite, nColumns);
@@ -64,7 +64,7 @@ public class NewProviderWizardPage extends NewComponentWizardPage {
         compCombo.select(3);
         compCombo.setEnabled(false);
     }
-
+    
     private void createAuthorize(Composite composite, int nColumns) {
         Label label = new Label(composite, SWT.NONE);
         label.setText("Authorities:");
@@ -78,7 +78,7 @@ public class NewProviderWizardPage extends NewComponentWizardPage {
         });
         new Label(composite, SWT.NONE);
     }
-
+    
     @Override
     protected IStatus[] getUpdateStatus() {
         IStatus[] status = super.getUpdateStatus();
@@ -87,32 +87,33 @@ public class NewProviderWizardPage extends NewComponentWizardPage {
         dest[status.length] = authorityStatus;
         return dest;
     }
-
+    
     @Override
     protected void handleFieldChanged(String fieldName) {
         super.handleFieldChanged(fieldName);
         authorityStatus = authorityChanged();
         doStatusUpdate();
     }
-
+    
     private IStatus authorityChanged() {
         Status status = new Status();
         if (authorityText != null) {
             authority = authorityText.getText().trim();
             if (authority.length() <= 0) {
                 status.setError("authorities can't be empty!");
-            } else {
+            }
+            else {
                 status.setOK();
             }
         }
         return status;
     }
-
+    
     @Override
     protected void createTypeMembers(IType newType, ImportsManager imports,
             IProgressMonitor monitor) throws CoreException {
         super.createTypeMembers(newType, imports, monitor);
-
+        
         try {
             // imports.addImport("android.database.sqlite.SQLiteDatabase");
             imports.addImport("android.database.sqlite.SQLiteOpenHelper");
@@ -123,7 +124,7 @@ public class NewProviderWizardPage extends NewComponentWizardPage {
             newType.createField(
                     "public static final Uri URI=Uri.parse(\"content://\" + AUTH);",
                     null, true, null);
-
+            
             newType.createField("private SQLiteOpenHelper mOpenHelper;", null,
                     true, null);
         } catch (Exception e) {
@@ -133,11 +134,11 @@ public class NewProviderWizardPage extends NewComponentWizardPage {
             throw new CoreException(status);
         }
     }
-
+    
     public String getAuthority() {
         return authority;
     }
-
+    
     public void setAuthority(String authority) {
         if (authorityText != null) {
             authorityText.setText(authority);

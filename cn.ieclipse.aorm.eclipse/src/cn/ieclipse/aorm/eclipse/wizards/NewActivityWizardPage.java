@@ -25,7 +25,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.CodeGeneration;
-import org.eclipse.jdt.ui.wizards.NewTypeWizardPage.ImportsManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -46,26 +45,26 @@ import cn.ieclipse.aorm.eclipse.helpers.ProjectHelper;
  * @author Michael Kober
  */
 public class NewActivityWizardPage extends NewComponentWizardPage {
-
+    
     // private static final String PAGE_NAME = "NewTypeWizardPage";
     // private static final String SETTINGS_CREATEMAIN = "create_main";
     // private static final String SETTINGS_CREATECONSTR = "create_constructor";
     // private static final String SETTINGS_CREATEUNIMPLEMENTED =
     // "create_unimplemented";
-
+    
     private static final String[] ACTIVITY_METHODS = { "onCreate", "onStart",
             "onResume", "onPause", "onStop", "onDestroy" };
-
+    
     private static final String[] SERVICE_METHODS = { "onCreate",
             "onStartCommand", "onDestroy" };
-
+    
     private static final String[] RECEIVER_METHODS = { "onReceive" };
-
+    
     private IntentReflectionHelper helper;
     private ElementTableSelector actionSelector;
     private ElementTableSelector categorySelector;
     private Composite methodComp;
-
+    
     /**
      * Creates a new {@code ProjectSettingsWizardPage}.
      * 
@@ -76,9 +75,9 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         super();
         setTitle("Android Activity");
         setDescription("Create a new Android Activity, Service, BroadcastReceiver.");
-
+        
     }
-
+    
     /**
      * The wizard owning this page is responsible for calling this method with
      * the current selection. The selection is used to initialize the fields of
@@ -91,9 +90,9 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         super.init(selection);
         helper = new IntentReflectionHelper(javaProject);
         doStatusUpdate();
-
+        
     }
-
+    
     /*
      * @see NewContainerWizardPage#handleFieldChanged
      */
@@ -101,7 +100,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         super.handleFieldChanged(fieldName);
         doStatusUpdate();
     }
-
+    
     @Override
     protected void createOtherControls(Composite composite, int nColumns) {
         createMethodStubSelectionControls(composite, nColumns);
@@ -111,7 +110,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
                 helper.getCategories());
         compCombo.remove(3);
     }
-
+    
     // /*
     // * @see WizardPage#becomesVisible
     // */
@@ -132,25 +131,25 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
     // }
     // }
     // }
-
+    
     private void createMethodStubSelectionControls(Composite composite,
             int nColumns) {
-
+        
         Label label = new Label(composite, SWT.NONE);
         label.setText("Which method stubs would you like to create?");
         label.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false,
                 nColumns, 1));
-
+        
         Composite methodsComposite = new Composite(composite, SWT.NONE);
         methodsComposite.setFont(composite.getFont());
         GridLayout layout = new GridLayout(nColumns, true);
         methodsComposite.setLayout(layout);
         methodsComposite.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true,
                 false, nColumns, 1));
-
+        
         methodComp = methodsComposite;
     }
-
+    
     private void updateMethods(String[] methodNames) {
         if (methodNames == null || methodComp == null) {
             return;
@@ -165,13 +164,13 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
             onRestartCB.setText(m + "()");
             onRestartCB.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false,
                     false, 1, 1));
-
+            
         }
-
+        
         methodComp.layout();
         methodComp.setVisible(true);
     }
-
+    
     /*
      * @see NewTypeWizardPage#createTypeMembers
      */
@@ -179,7 +178,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
             final ImportsManager imports, IProgressMonitor monitor)
             throws CoreException {
         super.createTypeMembers(type, imports, monitor);
-
+        
         final ArrayList<String> list = new ArrayList<String>();
         Display.getDefault().syncExec(new Runnable() {
             public void run() {
@@ -198,12 +197,12 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         for (String string : list) {
             generateStub(string, type, imports);
         }
-
+        
         if (monitor != null) {
             monitor.done();
         }
     }
-
+    
     private void generateOnCreate(IType type, ImportsManager imports)
             throws CoreException, JavaModelException {
         StringBuilder buf = new StringBuilder();
@@ -229,7 +228,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         buf.append("}"); //$NON-NLS-1$
         type.createMethod(buf.toString(), null, false, null);
     }
-
+    
     private void generateOnStartCommand(IType type, ImportsManager imports)
             throws CoreException, JavaModelException {
         StringBuilder buf = new StringBuilder();
@@ -256,9 +255,9 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         buf.append(lineDelim);
         buf.append("}"); //$NON-NLS-1$
         type.createMethod(buf.toString(), null, false, null);
-
+        
     }
-
+    
     private void generateStub(String method, IType type, ImportsManager imports)
             throws CoreException, JavaModelException {
         List<String> supers = ProjectHelper.getSuperTypeName(getJavaProject(),
@@ -267,7 +266,8 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
                 && "onCreate".equals(method)) {
             generateOnCreate(type, imports);
             return;
-        } else if (supers.contains(AdtConstants.SERVICE_QNAME)
+        }
+        else if (supers.contains(AdtConstants.SERVICE_QNAME)
                 && "onStartCommand".equals(method)) {
             generateOnStartCommand(type, imports);
             return;
@@ -282,11 +282,11 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         buf.append(lineDelim);
         buf.append("public void " + method + "(){"); //$NON-NLS-1$
         //
-
+        
         buf.append(lineDelim);
         buf.append("super." + method + "();");
         buf.append(lineDelim);
-
+        
         final String content = CodeGeneration.getMethodBodyContent(
                 type.getCompilationUnit(), type.getTypeQualifiedName('.'),
                 method, false, "", lineDelim); //$NON-NLS-1$ //$NON-NLS-2$
@@ -296,7 +296,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
         buf.append("}"); //$NON-NLS-1$
         type.createMethod(buf.toString(), null, false, null);
     }
-
+    
     private void createIntentCategoriesControl(final Composite composite,
             int nColumns, Set<String> categories) {
         GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false,
@@ -306,7 +306,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
                 categories.toArray());
         // selectedCategories = selector.getSelectedElements();
     }
-
+    
     private void createIntentActionsControl(final Composite composite,
             int nColumns, Set<String> actions) {
         GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false,
@@ -315,7 +315,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
                 "Intent actions", "Select Intent actions", actions.toArray());
         // selectedActions = selector.getSelectedElements();
     }
-
+    
     /**
      * Get intent categories
      * 
@@ -324,7 +324,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
     public String[] getSelectedCategories() {
         return asArray(categorySelector.getSelectedElements());
     }
-
+    
     /**
      * Get intent actions
      * 
@@ -333,7 +333,7 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
     public String[] getSelectedActions() {
         return asArray(actionSelector.getSelectedElements());
     }
-
+    
     @Override
     protected IStatus superClassChanged() {
         IStatus status = super.superClassChanged();
@@ -341,16 +341,19 @@ public class NewActivityWizardPage extends NewComponentWizardPage {
                 getSuperClass(), false);
         if (supers.contains(AdtConstants.SERVICE_QNAME)) {
             updateMethods(SERVICE_METHODS);
-        } else if (supers.contains(AdtConstants.ACTIVITY_QNAME)) {
+        }
+        else if (supers.contains(AdtConstants.ACTIVITY_QNAME)) {
             updateMethods(ACTIVITY_METHODS);
-        } else if (supers.contains(AdtConstants.RECEIVER_QNAME)) {
+        }
+        else if (supers.contains(AdtConstants.RECEIVER_QNAME)) {
             updateMethods(RECEIVER_METHODS);
-        } else {
+        }
+        else {
             updateMethods(new String[] {});
         }
         return status;
     }
-
+    
     /**
      * helper method.
      * 

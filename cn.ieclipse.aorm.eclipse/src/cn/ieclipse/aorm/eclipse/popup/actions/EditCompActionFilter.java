@@ -28,17 +28,17 @@ import cn.ieclipse.aorm.eclipse.helpers.AdtConstants;
 import cn.ieclipse.aorm.eclipse.helpers.ProjectHelper;
 
 public class EditCompActionFilter implements IActionFilter {
-
+    
     private static final EditCompActionFilter instance = new EditCompActionFilter();
-
+    
     private EditCompActionFilter() {
-
+        
     }
-
+    
     public static EditCompActionFilter getInstance() {
         return instance;
     }
-
+    
     public boolean testAttribute(Object target, String name, String value) {
         if ("type".equals(name)) {
             ICompilationUnit selection = null;
@@ -69,7 +69,8 @@ public class EditCompActionFilter implements IActionFilter {
                             || supers.contains(AdtConstants.RECEIVER_QNAME)) {
                         return true;
                     }
-                } else if ("provider".equals(value)) {
+                }
+                else if ("provider".equals(value)) {
                     if (supers.contains(AdtConstants.PROVIDER_QNAME)) {
                         return true;
                     }
@@ -78,5 +79,5 @@ public class EditCompActionFilter implements IActionFilter {
         }
         return false;
     }
-
+    
 }

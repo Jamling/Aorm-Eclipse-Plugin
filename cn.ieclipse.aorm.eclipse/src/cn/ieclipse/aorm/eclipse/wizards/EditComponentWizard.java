@@ -40,12 +40,12 @@ import cn.ieclipse.aorm.eclipse.helpers.Status;
  * 
  */
 public class EditComponentWizard extends Wizard implements IWorkbenchWizard {
-
+    
     IStructuredSelection selection;
     protected String nodeName;
     protected String compName;
     IJavaProject jProject;
-
+    
     /**
 	 * 
 	 */
@@ -53,13 +53,13 @@ public class EditComponentWizard extends Wizard implements IWorkbenchWizard {
         setWindowTitle(title);
         setDefaultPageImageDescriptor(AormPlugin
                 .getImageDescriptor(ImageConstants.LARGE_ACTIVITY_ICON));
-
+        
     }
-
+    
     protected void updateManifest(AndroidManifest manifest) {
-
+        
     }
-
+    
     @Override
     public boolean performFinish() {
         if (jProject != null) {
@@ -79,7 +79,8 @@ public class EditComponentWizard extends Wizard implements IWorkbenchWizard {
                             "Error when updating manifest", e.getMessage(),
                             status);
                 }
-            } else {
+            }
+            else {
                 Status status = new Status();
                 status.setError("Could not find Android manifest file.");
                 ErrorDialog.openError(getShell(),
@@ -90,7 +91,7 @@ public class EditComponentWizard extends Wizard implements IWorkbenchWizard {
         }
         return false;
     }
-
+    
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         this.selection = selection;
         IJavaElement jele = ProjectHelper
@@ -101,11 +102,14 @@ public class EditComponentWizard extends Wizard implements IWorkbenchWizard {
             Set<String> supers = ProjectHelper.getSuperTypeName(unit, false);
             if (supers.contains(AdtConstants.ACTIVITY_QNAME)) {
                 nodeName = AdtConstants.ACTIVITY_NODE;
-            } else if (supers.contains(AdtConstants.SERVICE_QNAME)) {
+            }
+            else if (supers.contains(AdtConstants.SERVICE_QNAME)) {
                 nodeName = AdtConstants.SERVICE_NODE;
-            } else if (supers.contains(AdtConstants.RECEIVER_QNAME)) {
+            }
+            else if (supers.contains(AdtConstants.RECEIVER_QNAME)) {
                 nodeName = AdtConstants.RECEIVER_NODE;
-            } else if (supers.contains(AdtConstants.PROVIDER_QNAME)) {
+            }
+            else if (supers.contains(AdtConstants.PROVIDER_QNAME)) {
                 nodeName = AdtConstants.PROVIDER_NODE;
             }
             try {
@@ -119,7 +123,7 @@ public class EditComponentWizard extends Wizard implements IWorkbenchWizard {
             System.out.println("node:" + nodeName + ",class:" + compName);
         }
     }
-
+    
     @Override
     public boolean canFinish() {
         // only allow the user to finish if the current page is the last page.

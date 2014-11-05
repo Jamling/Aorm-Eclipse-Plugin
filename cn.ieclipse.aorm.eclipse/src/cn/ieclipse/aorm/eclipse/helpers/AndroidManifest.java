@@ -62,9 +62,9 @@ public class AndroidManifest {
     private Element root;
     private String path;
     private String pkg;
-
+    
     private IJavaProject javaProject;
-
+    
     public AndroidManifest(String path, IJavaProject project) throws Exception {
         this.path = path;
         this.javaProject = project;
@@ -75,7 +75,7 @@ public class AndroidManifest {
         root = doc.getDocumentElement();
         pkg = root.getAttribute("package");
     }
-
+    
     private Node getNextNode(String nodeName) {
         NodeList actList = (NodeList) selectNodes("application/" + nodeName,
                 root);
@@ -86,18 +86,20 @@ public class AndroidManifest {
         while (node != null) {
             if (node instanceof Text) {
                 node = node.getNextSibling();
-            } else {
+            }
+            else {
                 break;
             }
         }
         return node;
     }
-
+    
     private Element createActivity(Element activity, String name,
             String[] actions, String[] categories) {
         if (pkg != null && name.startsWith(pkg)) {
             activity.setAttribute(ATTR_NAME, name.substring(pkg.length()));
-        } else {
+        }
+        else {
             activity.setAttribute(ATTR_NAME, name);
         }
         if ((actions != null && actions.length > 0)
@@ -123,17 +125,18 @@ public class AndroidManifest {
         }
         return activity;
     }
-
+    
     private void createProvider(Element activity, String name, String authority) {
-
+        
         activity.setAttribute("android:authorities", authority);
         if (pkg != null && name.startsWith(pkg)) {
             activity.setAttribute(ATTR_NAME, name.substring(pkg.length()));
-        } else {
+        }
+        else {
             activity.setAttribute(ATTR_NAME, name);
         }
     }
-
+    
     private Comment createComment() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(new java.util.Date());
@@ -144,7 +147,7 @@ public class AndroidManifest {
         user = "AORM plugin";
         return doc.createComment("created by " + user + " at " + dateStr);
     }
-
+    
     public void addActivity(String superName, String name, String[] actions,
             String[] categories) {
         String nodeName = null;
@@ -153,17 +156,20 @@ public class AndroidManifest {
                 javaProject, superName, false);
         if (superNames.contains(AdtConstants.ACTIVITY_QNAME)) {
             nodeName = AdtConstants.ACTIVITY_NODE;
-        } else if (superNames.contains(AdtConstants.SERVICE_QNAME)) {
+        }
+        else if (superNames.contains(AdtConstants.SERVICE_QNAME)) {
             nodeName = AdtConstants.SERVICE_NODE;
-        } else if (superNames.contains(AdtConstants.RECEIVER_QNAME)) {
+        }
+        else if (superNames.contains(AdtConstants.RECEIVER_QNAME)) {
             nodeName = AdtConstants.RECEIVER_NODE;
-        } else {
+        }
+        else {
             return;
         }
         if (nodeName == null) {
             return;
         }
-
+        
         Element activity = doc.createElement(nodeName);
         Node next = getNextNode(nodeName);
         Element app = (Element) selectSingleNode("application", root);
@@ -176,7 +182,7 @@ public class AndroidManifest {
         }
         createActivity(activity, name, actions, categories);
     }
-
+    
     private Element getComponentNode(String nodeName, String componentName) {
         String xpath = "application/" + nodeName + "[ @name='%s' ]";
         Element comp = (Element) selectSingleNode(
@@ -188,7 +194,7 @@ public class AndroidManifest {
         }
         return comp;
     }
-
+    
     /**
      * @param nodeName
      *            activity, service, provider or receiver
@@ -212,7 +218,7 @@ public class AndroidManifest {
         }
         return res;
     }
-
+    
     /**
      * @param nodeName
      *            activity, service, provider or receiver
@@ -250,7 +256,7 @@ public class AndroidManifest {
         }
         return res;
     }
-
+    
     public void setComponentAttribute(String type, String componentName,
             List<ComponentAttribute> attrs) {
         Element comp = getComponentNode(type, componentName);
@@ -273,16 +279,18 @@ public class AndroidManifest {
                         || "".equals(attr.getValue().trim())) {
                     if (comp.getAttribute(key) != null) {
                         comp.removeAttribute(key);
-                    } else {
+                    }
+                    else {
                         continue;
                     }
-                } else {
+                }
+                else {
                     comp.setAttribute(key, attr.getValue().trim());
                 }
             }
         }
     }
-
+    
     public void addProvider(String superName, String name, String authority) {
         if ("android.content.ContentProvider".equals(superName)) {
             Element activity = doc.createElement("provider");
@@ -298,7 +306,7 @@ public class AndroidManifest {
             createProvider(activity, name, authority);
         }
     }
-
+    
     public void save() throws Exception {
         TransformerFactory transFactory = TransformerFactory.newInstance();
         try {
@@ -310,12 +318,12 @@ public class AndroidManifest {
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
                     "yes");
-
+            
             DOMSource source = new DOMSource();
             source.setNode(doc);
             StreamResult result = new StreamResult();
             result.setOutputStream(new FileOutputStream(path));
-
+            
             transformer.transform(source, result);
         } catch (TransformerConfigurationException e) {
             throw e;
@@ -325,7 +333,7 @@ public class AndroidManifest {
             throw e;
         }
     }
-
+    
     public void save2() throws Exception {
         // OutputFormat format = new OutputFormat(doc);
         // // format.setLineWidth(65);
@@ -335,7 +343,7 @@ public class AndroidManifest {
         // XMLSerializer serializer = new XMLSerializer(fos, format);
         // serializer.serialize(doc);
         // fos.close();
-
+        
         OutputFormat format = new OutputFormat(doc);
         // format.setLineWidth(65);
         format.setIndenting(true);
@@ -344,7 +352,7 @@ public class AndroidManifest {
                 new FileOutputStream(path), format);
         serializer.serialize(doc);
     }
-
+    
     public static Node selectSingleNode(String express, Object source) {
         Node result = null;
         XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -381,10 +389,10 @@ public class AndroidManifest {
             AormPlugin.log(IStatus.WARNING, "can't select node by path {0}",
                     express);
         }
-
+        
         return result;
     }
-
+    
     public static NodeList selectNodes(String express, Object source) {
         NodeList result = null;
         XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -397,16 +405,16 @@ public class AndroidManifest {
             AormPlugin.log(IStatus.WARNING, "can't select node by path {0}",
                     express);
         }
-
+        
         return result;
     }
-
+    
     public static void main(String[] args) throws Exception {
         // AndroidManifest manifest = new
         // AndroidManifest("AndroidManifest.xml");
         // manifest.addActivity("android.content.BroadcastReceiver",
         // "com.compal.helloandroid.m.TR", new String[] { "abc" }, null);
-
+        
         // ArrayList<ComponentAttribute> list = manifest.getComponentAttribute(
         // "receiver", "com.example.m.TR");
         //

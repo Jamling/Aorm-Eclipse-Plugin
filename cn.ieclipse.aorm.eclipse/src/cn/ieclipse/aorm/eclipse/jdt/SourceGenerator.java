@@ -93,7 +93,7 @@ public class SourceGenerator {
         AST ast = unit.getAST();
         TypeDeclaration type = (TypeDeclaration) unit.types().get(0);
         ImportDeclaration id = ast.newImportDeclaration();
-        id.setName(ast.newName("org.melord.android.orm.Session"));
+        id.setName(ast.newName("cn.ieclipse.aorm.Session"));
         unit.imports().add(id);
 
         id = ast.newImportDeclaration();

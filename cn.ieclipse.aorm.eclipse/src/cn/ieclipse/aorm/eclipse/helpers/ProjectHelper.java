@@ -40,6 +40,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
 import cn.ieclipse.aorm.eclipse.AormPlugin;
+import cn.ieclipse.aorm.eclipse.jdt.AormClasspathContainerInitializer;
 
 /**
  * @author Jamling
@@ -47,19 +48,39 @@ import cn.ieclipse.aorm.eclipse.AormPlugin;
  */
 public class ProjectHelper {
     private static final String MANIFEST_FILE = "AndroidManifest.xml";
-
+    
+    public static void cleanOrmClasspath(IJavaProject javaProject)
+            throws JavaModelException {
+        IClasspathEntry[] entries = javaProject.getRawClasspath();
+        int idx = -1;
+        int i = 0;
+        for (IClasspathEntry entry : entries) {
+            if (AormClasspathContainerInitializer.invalidOrmClassPath(entry
+                    .getPath())) {
+                idx = i;
+                break;
+            }
+            i++;
+        }
+        if (idx >= 0) {
+            entries = removeEntryFromClasspath(entries, idx);
+            javaProject.setRawClasspath(entries, new NullProgressMonitor());
+        }
+    }
+    
     public static void addOrRemoveEntryToClasspath(IJavaProject javaProject,
             IClasspathEntry newEntry) throws JavaModelException {
         int idx = isEntryInClasspath(javaProject, newEntry);
         IClasspathEntry[] entries = javaProject.getRawClasspath();
         if (idx >= 0) {
             entries = removeEntryFromClasspath(entries, idx);
-        } else {
+        }
+        else {
             entries = addEntryToClasspath(entries, newEntry);
         }
         javaProject.setRawClasspath(entries, new NullProgressMonitor());
     }
-
+    
     public static int isEntryInClasspath(IJavaProject javaProject,
             IClasspathEntry newEntry) throws JavaModelException {
         IClasspathEntry[] entries = javaProject.getRawClasspath();
@@ -74,13 +95,13 @@ public class ProjectHelper {
         }
         return idx;
     }
-
+    
     public static boolean isContainerInClasspath(IJavaProject javaProject,
             IClasspathContainer container) throws JavaModelException {
         IClasspathEntry[] entries = javaProject.getRawClasspath();
         // IClasspathEntry[] temps = container.getClasspathEntries();
         boolean result = false;
-
+        
         for (IClasspathEntry entry : entries) {
             if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER
                     && entry.getPath().equals(container.getPath())) {
@@ -90,7 +111,7 @@ public class ProjectHelper {
         }
         return result;
     }
-
+    
     /**
      * Get the location of the AndroidManifest.xml.
      * 
@@ -101,7 +122,7 @@ public class ProjectHelper {
         boolean resourceFound = ((resource != null) && ((resource.exists())) && (resource instanceof IFile));
         return resourceFound ? ((IFile) resource) : null;
     }
-
+    
     public static AndroidManifest getAndroidManifest(IJavaElement jEle) {
         AndroidManifest manifest = null;
         IProject prj = null;
@@ -118,25 +139,25 @@ public class ProjectHelper {
                 manifest = new AndroidManifest(file.getLocation().toOSString(),
                         jprj);
             } catch (Exception e) {
-
+                
             }
         }
         return manifest;
     }
-
+    
     private static IClasspathEntry[] removeEntryFromClasspath(
             IClasspathEntry[] entries, int index) {
         int n = entries.length;
         IClasspathEntry[] newEntries = new IClasspathEntry[n - 1];
-
+        
         System.arraycopy(entries, 0, newEntries, 0, index);
-
+        
         System.arraycopy(entries, index + 1, newEntries, index, entries.length
                 - index - 1);
-
+        
         return newEntries;
     }
-
+    
     private static IClasspathEntry[] addEntryToClasspath(
             IClasspathEntry[] entries, IClasspathEntry newEntry) {
         int n = entries.length;
@@ -145,9 +166,9 @@ public class ProjectHelper {
         newEntries[n] = newEntry;
         return newEntries;
     }
-
+    
     // /
-
+    
     /**
      * Utility method to inspect a selection to find a Java element.
      * 
@@ -164,7 +185,7 @@ public class ProjectHelper {
             Object selectedElement = selection.getFirstElement();
             if (selectedElement instanceof IAdaptable) {
                 IAdaptable adaptable = (IAdaptable) selectedElement;
-
+                
                 jelem = (IJavaElement) adaptable.getAdapter(IJavaElement.class);
                 if (jelem == null || !jelem.exists()) {
                     jelem = null;
@@ -187,7 +208,7 @@ public class ProjectHelper {
         }
         return jelem;
     }
-
+    
     public static Set<IType> getSuperType(ICompilationUnit unit,
             boolean includeInterface) {
         Set<IType> set = new HashSet<IType>();
@@ -200,17 +221,18 @@ public class ProjectHelper {
                 for (IType type : superclass) {
                     if (type.isInterface() && includeInterface) {
                         set.add(type);
-                    } else {
+                    }
+                    else {
                         set.add(type);
                     }
-
+                    
                 }
             }
         } catch (Exception e) {
         }
         return set;
     }
-
+    
     public static Set<String> getSuperTypeName(ICompilationUnit unit,
             boolean includeInterface) {
         Set<String> set = new HashSet<String>();
@@ -225,17 +247,18 @@ public class ProjectHelper {
                         if (includeInterface) {
                             set.add(type.getFullyQualifiedName());
                         }
-                    } else {
+                    }
+                    else {
                         set.add(type.getFullyQualifiedName());
                     }
-
+                    
                 }
             }
         } catch (Exception e) {
         }
         return set;
     }
-
+    
     public static List<String> getSuperTypeName(IJavaProject project,
             String className, boolean includeInterface) {
         List<String> set = new ArrayList<String>();
@@ -250,24 +273,25 @@ public class ProjectHelper {
                         if (includeInterface) {
                             set.add(s.getFullyQualifiedName());
                         }
-                    } else {
+                    }
+                    else {
                         set.add(s.getFullyQualifiedName());
                     }
-
+                    
                 }
             }
         } catch (Exception e) {
-
+            
         }
         return set;
     }
-
+    
     public static List<String> getSuperTypeName(String className) {
         List<String> set = new ArrayList<String>();
         getSuperTypeName(className, set);
         return set;
     }
-
+    
     private static void getSuperTypeName(String className, List<String> set) {
         Class<?> clazz;
         try {
@@ -277,10 +301,10 @@ public class ProjectHelper {
                 getSuperTypeName(clazz.getSuperclass().getName(), set);
             }
         } catch (ClassNotFoundException e) {
-
+            
         }
     }
-
+    
     public static ArrayList<ComponentAttribute> getConfAttrs(String path) {
         ArrayList<ComponentAttribute> attrs = new ArrayList<ComponentAttribute>();
         InputStream is = AormPlugin.class.getResourceAsStream(path);
@@ -307,7 +331,8 @@ public class ProjectHelper {
                         isKey = true;
                         key = getKey(line, pos);
                         val.append(line.substring(pos + 1));
-                    } else {
+                    }
+                    else {
                         if (isKey) {
                             val.append(line);
                         }
@@ -329,7 +354,7 @@ public class ProjectHelper {
         }
         return attrs;
     }
-
+    
     private static String getKey(String str, int pos) {
         String key = str.substring(0, pos);
         pos = key.indexOf("android:");
@@ -338,7 +363,7 @@ public class ProjectHelper {
         }
         return key;
     }
-
+    
     private static String getVal(String str) {
         String ret = str;
         int pos = str.indexOf('>');
@@ -347,7 +372,7 @@ public class ProjectHelper {
         }
         return ret;
     }
-
+    
     public static void main(String[] args) {
         System.out.println(getConfAttrs("Activity.def"));
         System.out.println(getSuperTypeName("java.util.ArrayList"));

@@ -151,12 +151,15 @@ public class SourceAnalysis {
             StringBuilder sb = new StringBuilder();
             sb.append(name);
             sb.append(' ');
-            sb.append(type);
 
             if (haveId && id) {
+                sb.append("Integer");
                 sb.append(' ');
                 sb.append("Primary key autoincrement");
+            } else {
+                sb.append(type);
             }
+            
             if (haveNotNull) {
                 sb.append(' ');
                 sb.append(notNull ? "NOT NULL " : "");

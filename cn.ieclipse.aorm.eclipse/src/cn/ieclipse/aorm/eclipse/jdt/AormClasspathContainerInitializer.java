@@ -43,12 +43,12 @@ public class AormClasspathContainerInitializer extends
     private static final String RESOURCE_LIB = "libs";
     private static final String FS = System.getProperty("file.separator");
     private static final String AORM_NAME = "aorm";
-
+    
     public static final IClasspathEntry getContainerEntry() {
         return JavaCore.newContainerEntry(new Path(
                 AormClasspathContainer.CON_PATH));
     }
-
+    
     @Override
     public void initialize(IPath containerPath, IJavaProject project)
             throws CoreException {
@@ -61,16 +61,28 @@ public class AormClasspathContainerInitializer extends
                         new IClasspathContainer[] { container },
                         new NullProgressMonitor());
         }
-
+        
     }
-
+    
     private IClasspathContainer allocateAndroidContainer(IJavaProject project) {
         IClasspathContainer ormContainer = new AormClasspathContainer(
                 getClasspathEntries(),
                 new Path(AormClasspathContainer.CON_PATH));
         return ormContainer;
     }
-
+    
+    public static boolean invalidOrmClassPath(IPath path) {
+        boolean ret = false;
+        String file = path.lastSegment();
+        if (file.startsWith(AORM_NAME)) {
+            Bundle bundle = AormPlugin.getDefault().getBundle();
+            Enumeration<URL> urls = bundle.findEntries(RESOURCE_LIB, file,
+                    false);
+            ret = urls == null || !urls.hasMoreElements();
+        }
+        return ret;
+    }
+    
     public static IClasspathEntry[] getClasspathEntries() {
         ArrayList<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
         Bundle bundle = AormPlugin.getDefault().getBundle();
@@ -90,7 +102,7 @@ public class AormClasspathContainerInitializer extends
                 paths.add(path);
             }
         }
-
+        
         Path libPath = getJarPath(AORM_NAME, paths);
         if (libPath != null) {
             Path docPath = getJarPath(AORM_NAME + ".doc", paths);
@@ -102,7 +114,7 @@ public class AormClasspathContainerInitializer extends
         }
         return entries.toArray(new IClasspathEntry[entries.size()]);
     }
-
+    
     private static Path getJarPath(String name, ArrayList<Path> paths) {
         Path ret = null;
         for (Path path : paths) {

@@ -55,22 +55,22 @@ import cn.ieclipse.aorm.eclipse.helpers.ProjectHelper;
 public class EditComponentWizardPage extends WizardPage {
     protected ArrayList<ComponentAttribute> attributes = new ArrayList<ComponentAttribute>();
     private FontMetrics fontMetrics;
-
+    
     public EditComponentWizardPage(String pageName) {
         this(pageName, "Edit Component attribute", AormPlugin
                 .getImageDescriptor(ImageConstants.LARGE_ACTIVITY_ICON));
     }
-
+    
     protected EditComponentWizardPage(String pageName, String title,
             ImageDescriptor titleImage) {
         super(pageName, title, titleImage);
     }
-
+    
     public void setComponentType(String nodeName) {
-
+        
         attributes = ProjectHelper.getConfAttrs(nodeName + ".def");
     }
-
+    
     public void setInitAttributes(List<ComponentAttribute> initAttrs) {
         for (ComponentAttribute old : initAttrs) {
             for (ComponentAttribute attr : attributes) {
@@ -83,9 +83,9 @@ public class EditComponentWizardPage extends WizardPage {
             }
         }
     }
-
+    
     public void createControl(Composite parent) {
-
+        
         GC gc = new GC(parent);
         gc.setFont(parent.getFont());
         fontMetrics = gc.getFontMetrics();
@@ -100,7 +100,7 @@ public class EditComponentWizardPage extends WizardPage {
         data.heightHint = 300;
         page.setLayoutData(data);
         page.setLayout(new GridLayout(1, false));
-
+        
         Composite container = new Composite(page, SWT.NULL);
         GridLayout layout = new GridLayout();
         layout.numColumns = 4;
@@ -113,12 +113,12 @@ public class EditComponentWizardPage extends WizardPage {
         page.setContent(container);
         Point p = container.computeSize(SWT.DEFAULT, SWT.DEFAULT);
         page.setMinSize(p);
-
+        
         setControl(fixPane);
-
+        
         Dialog.applyDialogFont(fixPane);
     }
-
+    
     private void createAttrFiled(Composite parent, int nColumns,
             ComponentAttribute attr) {
         //
@@ -144,11 +144,12 @@ public class EditComponentWizardPage extends WizardPage {
             field.doFillIntoGrid(parent, nColumns);
             // int w = Dialog.convertWidthInCharsToPixels(fontMetrics, 50);
             // LayoutUtil.setWidthHint(field.get, w);
-        } else if (ComponentAttribute.TYPE_MLIST == type
+        }
+        else if (ComponentAttribute.TYPE_MLIST == type
                 || ComponentAttribute.TYPE_DRAWABLE == type
                 || ComponentAttribute.TYPE_STYPE == type
                 || ComponentAttribute.TYPE_STRING_REF == type) {
-
+            
             MyStringButtonDialogField field = new MyStringButtonDialogField(
                     new StringButtonAdapter(attr, parent.getShell()));
             field.setLabelText(attr.getShortName());
@@ -159,7 +160,8 @@ public class EditComponentWizardPage extends WizardPage {
             if (attr.getValue() != null) {
                 field.setText(attr.getValue());
             }
-        } else if (ComponentAttribute.TYPE_STRING == type) {
+        }
+        else if (ComponentAttribute.TYPE_STRING == type) {
             StringDialogField field = new StringDialogField();
             field.setLabelText(attr.getShortName());
             field.setDialogFieldListener(new StringButtonAdapter(attr, parent
@@ -169,54 +171,54 @@ public class EditComponentWizardPage extends WizardPage {
                 field.setText(attr.getValue());
             }
             if ("name".equals(attr.getShortName())) {
-
+                
             }
         }
-
+        
     }
-
+    
     private static class ButtonSelector extends SelectionAdapter {
         Text text;
         ComponentAttribute attr;
-
+        
         public ButtonSelector(Text text, ComponentAttribute attr) {
             this.text = text;
             this.attr = attr;
         }
-
+        
         @Override
         public void widgetSelected(SelectionEvent e) {
-
+            
         }
     }
-
+    
     @SuppressWarnings("restriction")
     private static class MyStringButtonDialogField extends
             StringButtonDialogField {
-
+        
         public MyStringButtonDialogField(StringButtonAdapter adapter) {
             super(adapter);
             setDialogFieldListener(adapter);
         }
-
+        
     }
-
+    
     private static class StringButtonAdapter implements IStringButtonAdapter,
             IDialogFieldListener {
         private ComponentAttribute attr;
         private Shell shell;
-
+        
         public StringButtonAdapter(ComponentAttribute attr, Shell shell) {
             this.attr = attr;
             this.shell = shell;
         }
-
+        
         public void changeControlPressed(DialogField field) {
             if (attr.getType() == ComponentAttribute.TYPE_MLIST) {
                 MultiCheckSelector muSelector = new MultiCheckSelector(shell,
                         attr.getFormats(), attr.getValue());
                 muSelector.setCallback(new MultiCheckSelector.Callback() {
-
+                    
                     public void onOkay(List<String> selections) {
                         StringBuilder sb = new StringBuilder();
                         for (String item : selections) {
@@ -228,35 +230,35 @@ public class EditComponentWizardPage extends WizardPage {
                         }
                         attr.setValue(sb.toString());
                     }
-
+                    
                     public void onClose() {
                         // TODO Auto-generated method stub
-
+                        
                     }
                 });
                 muSelector.open();
             }
         }
-
+        
         public void dialogFieldChanged(DialogField field) {
             StringDialogField f = (StringDialogField) field;
             attr.setValue(f.getText());
-
+            
         }
     }
-
+    
     private static class ComboAdapter implements IDialogFieldListener {
         private ComponentAttribute attr;
-
+        
         public ComboAdapter(ComponentAttribute attr) {
             this.attr = attr;
         }
-
+        
         public void dialogFieldChanged(DialogField field) {
             ComboDialogField f = (ComboDialogField) field;
             System.out.println(f.getText() + " change to ");
             attr.setValue(f.getText());
         }
     }
-
+    
 }

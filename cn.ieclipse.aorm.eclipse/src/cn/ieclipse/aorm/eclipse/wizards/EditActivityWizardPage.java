@@ -44,7 +44,7 @@ public class EditActivityWizardPage extends WizardPage {
     IJavaProject javaProject;
     private ElementTableSelector actionSelector;
     private ElementTableSelector categorySelector;
-
+    
     /**
      * @wbp.parser.constructor
      */
@@ -52,12 +52,12 @@ public class EditActivityWizardPage extends WizardPage {
         this(pageName, "Configure Component intent-filter", AormPlugin
                 .getImageDescriptor(ImageConstants.LARGE_ACTIVITY_ICON));
     }
-
+    
     public EditActivityWizardPage(String pageName, String title,
             ImageDescriptor titleImage) {
         super(pageName, title, titleImage);
     }
-
+    
     public void init(IStructuredSelection selection) {
         IJavaElement ele = ProjectHelper.getInitialJavaElement(selection);
         if (ele != null) {
@@ -65,7 +65,7 @@ public class EditActivityWizardPage extends WizardPage {
         }
         helper = new IntentReflectionHelper(javaProject);
     }
-
+    
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NULL);
         container.setFont(parent.getFont());
@@ -75,11 +75,11 @@ public class EditActivityWizardPage extends WizardPage {
         createIntentActionsControl(container, 1, helper.getActions());
         createIntentCategoriesControl(container, 1, helper.getCategories());
         container.setLayout(layout);
-
+        
         setControl(container);
         Dialog.applyDialogFont(container);
     }
-
+    
     private void createIntentCategoriesControl(final Composite composite,
             int nColumns, Set<String> categories) {
         GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false,
@@ -89,7 +89,7 @@ public class EditActivityWizardPage extends WizardPage {
                 categories.toArray());
         // selectedCategories = selector.getSelectedElements();
     }
-
+    
     private void createIntentActionsControl(final Composite composite,
             int nColumns, Set<String> actions) {
         GridData gridData = new GridData(SWT.FILL, SWT.TOP, true, false,
@@ -98,7 +98,7 @@ public class EditActivityWizardPage extends WizardPage {
                 "Intent actions", "Select Intent actions", actions.toArray());
         // selectedActions = selector.getSelectedElements();
     }
-
+    
     /**
      * Get intent categories
      * 
@@ -107,7 +107,7 @@ public class EditActivityWizardPage extends WizardPage {
     public String[] getSelectedCategories() {
         return asArray(categorySelector.getSelectedElements());
     }
-
+    
     /**
      * Get intent actions
      * 
@@ -116,7 +116,7 @@ public class EditActivityWizardPage extends WizardPage {
     public String[] getSelectedActions() {
         return asArray(actionSelector.getSelectedElements());
     }
-
+    
     /**
      * helper method.
      * 

@@ -23,19 +23,19 @@ import cn.ieclipse.aorm.eclipse.helpers.AndroidManifest;
  * 
  */
 public class EditProviderWizard extends EditComponentWizard {
-
+    
     /**
      * Wizard id.
      */
     public static final String ID = AormPlugin.PLUGIN_ID
             + "wizards.EditProviderWizard";
-
+    
     EditComponentWizardPage page0;
-
+    
     public EditProviderWizard() {
         super("Edit Android ContentProvider");
     }
-
+    
     @Override
     public void addPages() {
         super.addPages();
@@ -45,13 +45,13 @@ public class EditProviderWizard extends EditComponentWizard {
         }
         addPage(page0);
     }
-
+    
     @Override
     public boolean canFinish() {
         // only allow the user to finish if the current page is the last page.
         return super.canFinish() && getContainer().getCurrentPage() == page0;
     }
-
+    
     @Override
     protected void updateManifest(AndroidManifest manifest) {
         manifest.setComponentAttribute(nodeName, compName, page0.attributes);

@@ -21,7 +21,7 @@ package cn.ieclipse.aorm.eclipse.wizards;
  * @author Jamling
  */
 public class NewOrmProviderWizard extends NewProviderWizard {
-
+    
     /**
      * Constructor for ProviderNewWizard.
      */

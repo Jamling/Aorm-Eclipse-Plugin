@@ -36,27 +36,27 @@ import cn.ieclipse.aorm.eclipse.jdt.AormClasspathContainerInitializer;
  * 
  */
 public class AddLibAction implements IObjectActionDelegate {
-
+    
     private Shell shell;
-
+    
     private IJavaProject project;
-
+    
     private IStructuredSelection selection;
-
+    
     /**
      * Constructor for Action1.
      */
     public AddLibAction() {
         super();
     }
-
+    
     /**
      * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
      */
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         shell = targetPart.getSite().getShell();
     }
-
+    
     /**
      * @see IActionDelegate#run(IAction)
      */
@@ -65,22 +65,24 @@ public class AddLibAction implements IObjectActionDelegate {
         project = null;
         if (obj instanceof IProject) {
             project = JavaCore.create((IProject) obj);
-        } else if (obj instanceof IJavaProject) {
+        }
+        else if (obj instanceof IJavaProject) {
             project = (IJavaProject) obj;
         }
         try {
+            ProjectHelper.cleanOrmClasspath(project);
             IClasspathEntry[] entries = AormClasspathContainerInitializer
                     .getClasspathEntries();
             for (IClasspathEntry entry : entries) {
                 ProjectHelper.addOrRemoveEntryToClasspath(project, entry);
             }
-
+            
         } catch (JavaModelException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
+    
     /**
      * project.getProject().getFile(
      * 
@@ -89,9 +91,10 @@ public class AddLibAction implements IObjectActionDelegate {
     public void selectionChanged(IAction action, ISelection selection) {
         if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
             this.selection = (IStructuredSelection) selection;
-        } else {
+        }
+        else {
             this.selection = null;
         }
     }
-
+    
 }

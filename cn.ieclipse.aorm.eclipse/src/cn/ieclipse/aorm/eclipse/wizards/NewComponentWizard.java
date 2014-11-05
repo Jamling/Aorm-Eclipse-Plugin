@@ -40,7 +40,7 @@ import cn.ieclipse.aorm.eclipse.helpers.Status;
 @SuppressWarnings("restriction")
 public class NewComponentWizard extends NewElementWizard {
     protected NewComponentWizardPage page = null;
-
+    
     /**
      * Creates a new android component wizard. set default title and page icon
      */
@@ -49,7 +49,7 @@ public class NewComponentWizard extends NewElementWizard {
         setDefaultPageImageDescriptor(AormPlugin
                 .getImageDescriptor(ImageConstants.LARGE_ACTIVITY_ICON));
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -68,7 +68,7 @@ public class NewComponentWizard extends NewElementWizard {
                         AndroidManifest manifest = new AndroidManifest(
                                 manifestFile.getLocation().toOSString(),
                                 page.getJavaProject());
-
+                        
                         updateManifest(manifest);
                         manifest.save2();
                         resource.refreshLocal(0, null);
@@ -80,7 +80,8 @@ public class NewComponentWizard extends NewElementWizard {
                                 "Error when updating manifest", e.getMessage(),
                                 status);
                     }
-                } else {
+                }
+                else {
                     Status status = new Status();
                     status.setError("Could not find Android manifest file.");
                     ErrorDialog.openError(getShell(),
@@ -92,16 +93,16 @@ public class NewComponentWizard extends NewElementWizard {
         }
         return res;
     }
-
+    
     /**
      * apply change to AndroidManifest.xml
      * 
      * @param manifest
      */
     protected void updateManifest(AndroidManifest manifest) {
-
+        
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -111,7 +112,7 @@ public class NewComponentWizard extends NewElementWizard {
     public void addPages() {
         addPage(page);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -123,7 +124,7 @@ public class NewComponentWizard extends NewElementWizard {
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         page.init(selection);
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -134,7 +135,7 @@ public class NewComponentWizard extends NewElementWizard {
         // only allow the user to finish if the current page is the last page.
         return super.canFinish() && getContainer().getCurrentPage() == page;
     }
-
+    
     /*
      * (non-Javadoc)
      * 
@@ -147,7 +148,7 @@ public class NewComponentWizard extends NewElementWizard {
             throws InterruptedException, CoreException {
         page.createType(monitor);
     }
-
+    
     /*
      * (non-Javadoc)
      * 

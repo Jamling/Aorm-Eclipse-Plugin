@@ -29,26 +29,26 @@ public class AormClasspathContainer implements IClasspathContainer {
     // public static final IPath PATH = new Path(CON_PATH);
     public IClasspathEntry[] entries;
     public IPath path;
-
+    
     AormClasspathContainer(IClasspathEntry[] entries, IPath path) {
         this.entries = entries;
         this.path = path;
     }
-
+    
     public IClasspathEntry[] getClasspathEntries() {
         return entries;
     }
-
+    
     public String getDescription() {
         return LIB_NAME;
     }
-
+    
     public int getKind() {
         return IClasspathContainer.K_DEFAULT_SYSTEM;
     }
-
+    
     public IPath getPath() {
         return path;
     }
-
+    
 }

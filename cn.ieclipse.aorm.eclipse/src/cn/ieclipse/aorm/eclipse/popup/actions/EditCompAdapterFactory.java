@@ -19,16 +19,16 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.IActionFilter;
 
 public class EditCompAdapterFactory implements IAdapterFactory {
-
+    
     public Object getAdapter(Object adaptableObject, Class adapterType) {
         if (adapterType == IActionFilter.class) {
             return EditCompActionFilter.getInstance();
         }
         return null;
     }
-
+    
     public Class[] getAdapterList() {
         return new Class[] { IActionFilter.class };
     }
-
+    
 }

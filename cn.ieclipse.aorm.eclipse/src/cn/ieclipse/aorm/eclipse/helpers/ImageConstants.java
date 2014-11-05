@@ -21,20 +21,20 @@ package cn.ieclipse.aorm.eclipse.helpers;
  * @author Michael Kober
  */
 public interface ImageConstants {
-
+    
     /** File location of the small icon. */
     String SMALL_ACTIVITY_ICON = "res/android-32.jpg";
-
+    
     /** File location of the large image logo. */
     String LARGE_ACTIVITY_ICON = "res/android-64.png";
-
+    
     String ACTION_CUSTOM = "res/cus.png";
-
+    
     String ACTION_SYSTEM = "res/sys.png";
-
+    
     String ACTION_ADD = "res/add.png";
-
+    
     String ACTION_UP = "res/up.png";
-
+    
     String ACTION_DOWN = "res/down.png";
 }

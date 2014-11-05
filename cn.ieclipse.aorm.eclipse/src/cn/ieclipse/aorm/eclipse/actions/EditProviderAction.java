@@ -27,10 +27,10 @@ import cn.ieclipse.aorm.eclipse.wizards.EditProviderWizard;
  * 
  */
 public class EditProviderAction extends OpenWizardAction {
-
+    
     @Override
     protected IWorkbenchWizard instanciateWizard(IAction paramIAction) {
         return new EditProviderWizard();
     }
-
+    
 }

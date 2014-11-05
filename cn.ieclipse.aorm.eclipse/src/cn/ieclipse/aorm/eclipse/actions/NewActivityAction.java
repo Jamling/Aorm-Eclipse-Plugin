@@ -18,7 +18,6 @@ package cn.ieclipse.aorm.eclipse.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IWorkbenchWizard;
 
-import cn.ieclipse.aorm.eclipse.wizards.EditActivityWizard;
 import cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard;
 
 /**
@@ -28,10 +27,10 @@ import cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard;
  * 
  */
 public class NewActivityAction extends OpenWizardAction {
-
+    
     @Override
     protected IWorkbenchWizard instanciateWizard(IAction paramIAction) {
         return new NewActivityWizard();
     }
-
+    
 }
