@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.melord.pde.explorer.feature_3.5.1.2.jar" id="org.melord.pde.explorer.feature" version="3.5.1.2">
+      <category name="Eclipse Explorer"/>
+   </feature>
+   <feature url="features/cn.ieclipse.aorm.eclipse.feature_3.5.0.1.jar" id="cn.ieclipse.aorm.eclipse.feature" version="3.5.0.1">
+      <category name="Android ORM"/>
+   </feature>
+   <category-def name="Android ORM" label="Android ORM"/>
+   <category-def name="Eclipse Explorer" label="Eclipse Explorer"/>
+</site>
