@@ -64,17 +64,17 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
     //
     // private ElementTableSelector actionSelector;
     // private ElementTableSelector categorySelector;
-    
+
     protected IJavaProject javaProject = null;
-    
+
     // protected Composite methodComp;
-    
+
     public static final int EDIT_MODE_NEW = 0;
     public static final int EDIT_MODE_MOD = 1;
     protected int editMode = EDIT_MODE_NEW;
-    
+
     protected Combo compCombo;
-    
+
     /**
      * Creates a new {@code ProjectSettingsWizardPage}.
      * 
@@ -86,7 +86,7 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
         setTitle("Android Activity");
         setDescription("Create a new Android Activity, Service, BroadcastReceiver.");
     }
-    
+
     /**
      * The wizard owning this page is responsible for calling this method with
      * the current selection. The selection is used to initialize the fields of
@@ -101,20 +101,20 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
         initContainerPage(jelem);
         initTypePage(jelem);
         doStatusUpdate();
-        
+
         AndroidManifest manifest = ProjectHelper.getAndroidManifest(jelem);
         if (manifest != null) {
-            
+
         }
     }
-    
+
     // ------ validation --------
     protected void doStatusUpdate() {
         // the mode severe status will be displayed and the OK button
         // enabled/disabled.
         updateStatus(getUpdateStatus());
     }
-    
+
     protected IStatus[] getUpdateStatus() {
         // status of all used components
         IStatus[] status = new IStatus[] {
@@ -124,22 +124,22 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
                 fSuperClassStatus, fSuperInterfacesStatus };
         return status;
     }
-    
+
     // ------ UI --------
-    
+
     /*
      * @see WizardPage#createControl
      */
     public void createControl(Composite parent) {
         initializeDialogUnits(parent);
-        
+
         Composite composite = new Composite(parent, SWT.NONE);
         composite.setFont(parent.getFont());
         int nColumns = 4;
         GridLayout layout = new GridLayout();
         layout.numColumns = nColumns;
         composite.setLayout(layout);
-        
+
         // pick component
         createComponent(composite, nColumns);
         // pick & choose the wanted UI components
@@ -147,26 +147,26 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
         createPackageControls(composite, nColumns);
         createSeparator(composite, nColumns);
         createTypeNameControls(composite, nColumns);
-        
+
         // setTypeName("Activity", true);
         createSuperClassControls(composite, nColumns);
-        
+
         createSuperInterfacesControls(composite, nColumns);
-        
+
         createOtherControls(composite, nColumns);
-        
+
         // createCommentControls(composite, nColumns);
         setAddComments(true, false);
         enableCommentControl(true);
-        
+
         setControl(composite);
         Dialog.applyDialogFont(composite);
     }
-    
+
     protected void createComponent(Composite composite, int nColumns) {
         Label l = new Label(composite, SWT.NONE);
         l.setText("Component:");
-        
+
         compCombo = new Combo(composite, SWT.READ_ONLY);
         compCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
                 false, 1, 1));
@@ -181,11 +181,11 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
                 setSuperClass(compCombo.getText(), true);
             }
         });
-        
+
         new Label(composite, SWT.NONE);
         new Label(composite, SWT.NONE);
     }
-    
+
     /**
      * add some customize controls
      * 
@@ -193,9 +193,9 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
      * @param nColumns
      */
     protected void createOtherControls(Composite composite, int nColumns) {
-        
+
     }
-    
+
     //
     // /*
     // * @see WizardPage#becomesVisible
@@ -217,7 +217,7 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
     // }
     // }
     // }
-    
+
     /*
      * @see NewTypeWizardPage#createTypeMembers
      */
@@ -229,7 +229,7 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
         createInheritedMethods(type, doConstr, doInherited, imports,
                 new SubProgressMonitor(monitor, 1));
     }
-    
+
     @Override
     protected void createTypeNameControls(Composite composite, int nColumns) {
         super.createTypeNameControls(composite, nColumns - 1);
@@ -246,8 +246,7 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
                         if (!getTypeName().endsWith(simpleName)) {
                             setTypeName(getTypeName() + simpleName, true);
                         }
-                    }
-                    else {
+                    } else {
                         if (getTypeName().endsWith(simpleName)) {
                             setTypeName(
                                     getTypeName().substring(
@@ -261,14 +260,14 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
             }
         });
     }
-    
+
     @Override
     protected IStatus superClassChanged() {
         // TODO Auto-generated method stub
         return super.superClassChanged();
-        
+
     }
-    
+
     protected String findSuperName(String superName) {
         boolean flag = AdtConstants.ACTIVITY_QNAME.equals(superName);
         flag = flag | AdtConstants.SERVICE_QNAME.equals(superName);
@@ -276,11 +275,10 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
         flag = flag | AdtConstants.RECEIVER_QNAME.equals(superName);
         if (flag) {
             return superName;
-        }
-        else {
+        } else {
             try {
                 Class clz = Class.forName(superName);
-                
+
             } catch (Exception e) {
                 // TODO: handle exception
             }

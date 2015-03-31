@@ -27,10 +27,10 @@ import cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard;
  * 
  */
 public class NewActivityAction extends OpenWizardAction {
-    
+
     @Override
     protected IWorkbenchWizard instanciateWizard(IAction paramIAction) {
         return new NewActivityWizard();
     }
-    
+
 }

@@ -24,49 +24,49 @@ import cn.ieclipse.aorm.eclipse.AormPlugin;
  * 
  */
 public class Status extends org.eclipse.core.runtime.Status {
-    
+
     public Status(int severity, String message, Throwable exception) {
         super(severity, AormPlugin.PLUGIN_ID, message, exception);
     }
-    
+
     public Status(int severity, String message) {
         this(severity, message, null);
     }
-    
+
     public Status() {
         this(IStatus.OK, null);
     }
-    
+
     public void setError(String message) {
         setSeverity(IStatus.ERROR);
         setMessage(message);
     }
-    
+
     public void setWarning(String message) {
         setSeverity(IStatus.WARNING);
         setMessage(message);
     }
-    
+
     public void setOK() {
         setSeverity(OK);
         setMessage(null);
     }
-    
+
     @Override
     public void setSeverity(int severity) {
         super.setSeverity(severity);
     }
-    
+
     @Override
     public void setMessage(String message) {
         super.setMessage(message);
     }
-    
+
     @Override
     public void setException(Throwable exception) {
         super.setException(exception);
     }
-    
+
     public static void main(String[] args) {
         Status st = new Status();
         System.out.println(st);

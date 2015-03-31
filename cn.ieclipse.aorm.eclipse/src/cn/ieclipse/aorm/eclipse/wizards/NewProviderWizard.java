@@ -30,7 +30,7 @@ public class NewProviderWizard extends NewComponentWizard {
      */
     public static final String ID = AormPlugin.PLUGIN_ID
             + "wizards.NewProviderWizard";
-    
+
     /**
      * Constructor for ProviderNewWizard.
      */
@@ -39,7 +39,7 @@ public class NewProviderWizard extends NewComponentWizard {
         setWindowTitle("New ContentProvider");
         page = new NewProviderWizardPage();
     }
-    
+
     @Override
     protected void updateManifest(AndroidManifest manifest) {
         NewProviderWizardPage newProviderPage = (NewProviderWizardPage) page;
@@ -49,5 +49,5 @@ public class NewProviderWizard extends NewComponentWizard {
         final String authority = newProviderPage.getAuthority();
         manifest.addProvider(superName, pkgName + "." + typeName, authority);
     }
-    
+
 }

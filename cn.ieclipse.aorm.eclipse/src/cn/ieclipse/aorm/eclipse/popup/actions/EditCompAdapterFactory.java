@@ -16,19 +16,30 @@
 package cn.ieclipse.aorm.eclipse.popup.actions;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.ui.IActionFilter;
 
 public class EditCompAdapterFactory implements IAdapterFactory {
-    
+
+    private static final Class<?>[] ADAPTER = { IActionFilter.class };
+
     public Object getAdapter(Object adaptableObject, Class adapterType) {
-        if (adapterType == IActionFilter.class) {
-            return EditCompActionFilter.getInstance();
+        // System.out.println("1:" + adaptableObject.getClass() + ","
+        // + adapterType);
+        if (IActionFilter.class.equals(adapterType)) {
+            if (adaptableObject instanceof ICompilationUnit) {
+                EditCompActionFilter filter = EditCompActionFilter
+                        .getInstance();
+                filter.setUnit((ICompilationUnit) adaptableObject);
+                return filter;
+            }
         }
         return null;
     }
-    
+
     public Class[] getAdapterList() {
-        return new Class[] { IActionFilter.class };
+        // System.out.println("2");
+        return ADAPTER;
     }
-    
+
 }

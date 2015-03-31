@@ -37,13 +37,15 @@ import org.eclipse.swt.widgets.TableItem;
  * 
  */
 public class MultiCheckSelector extends Dialog {
-    
+
     private Table list;
-    
+
     String[] formats;
-    
+
     String initValue;
-    
+
+    private List<String> selected;
+
     /**
      * Create the dialog.
      * 
@@ -52,13 +54,13 @@ public class MultiCheckSelector extends Dialog {
     public MultiCheckSelector(Shell parentShell) {
         super(parentShell);
     }
-    
+
     public MultiCheckSelector(Shell parentShell, String[] formats, String value) {
         super(parentShell);
         this.formats = formats;
         this.initValue = value;
     }
-    
+
     /**
      * Create contents of the dialog.
      * 
@@ -67,10 +69,10 @@ public class MultiCheckSelector extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite container = (Composite) super.createDialogArea(parent);
-        
+
         list = new Table(container, SWT.BORDER | SWT.MULTI | SWT.CHECK);
         list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-        
+
         List<String> values = new ArrayList<String>();
         if (initValue != null && initValue.trim().length() > 0) {
             String[] temp = initValue.split("\\|");
@@ -78,7 +80,7 @@ public class MultiCheckSelector extends Dialog {
                 values.add(str.trim());
             }
         }
-        
+
         for (int i = 0; i < formats.length; i++) {
             TableItem item = new TableItem(list, SWT.NONE);
             item.setText(formats[i]);
@@ -88,7 +90,7 @@ public class MultiCheckSelector extends Dialog {
         }
         return container;
     }
-    
+
     /**
      * Create contents of the button bar.
      * 
@@ -98,15 +100,12 @@ public class MultiCheckSelector extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         Button ok = createButton(parent, IDialogConstants.OK_ID,
                 IDialogConstants.OK_LABEL, true);
-        ok.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (callback != null) {
-                    List<String> sel = getSelection();
-                    callback.onOkay(sel);
-                }
-            }
-        });
+        // ok.addSelectionListener(new SelectionAdapter() {
+        // @Override
+        // public void widgetSelected(SelectionEvent e) {
+        //
+        // }
+        // });
         Button cancel = createButton(parent, IDialogConstants.CANCEL_ID,
                 IDialogConstants.CANCEL_LABEL, false);
         cancel.addSelectionListener(new SelectionAdapter() {
@@ -118,7 +117,21 @@ public class MultiCheckSelector extends Dialog {
             }
         });
     }
-    
+
+    @Override
+    protected void okPressed() {
+        selected = getSelection();
+        // if (callback != null) {
+        // List<String> sel = getSelection();
+        // callback.onOkay(sel);
+        // }
+        super.okPressed();
+    }
+
+    public List<String> getSelected() {
+        return selected;
+    }
+
     /**
      * Return the initial size of the dialog.
      */
@@ -126,25 +139,27 @@ public class MultiCheckSelector extends Dialog {
     protected Point getInitialSize() {
         return new Point(450, 300);
     }
-    
+
     public java.util.List<String> getSelection() {
         ArrayList<String> res = new ArrayList<String>();
-        TableItem[] tis = list.getSelection();
+        TableItem[] tis = list.getItems();
         for (TableItem ti : tis) {
-            res.add(ti.getText());
+            if (ti.getChecked()) {
+                res.add(ti.getText());
+            }
         }
         return res;
     }
-    
+
     public void setCallback(Callback callback) {
         this.callback = callback;
     }
-    
+
     private Callback callback;
-    
+
     public static interface Callback {
         public void onClose();
-        
+
         public void onOkay(List<String> selections);
     }
 }

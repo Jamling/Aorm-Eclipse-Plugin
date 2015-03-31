@@ -26,14 +26,14 @@ public class ComponentIntentFilter {
     String name;
     List<String> categories = new ArrayList<String>();
     List<String> actions = new ArrayList<String>();
-    
+
     /**
      * @return the name
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * @param name
      *            the name to set
@@ -41,14 +41,14 @@ public class ComponentIntentFilter {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     /**
      * @return the categories
      */
     public List<String> getCategories() {
         return categories;
     }
-    
+
     /**
      * @param categories
      *            the categories to set
@@ -56,14 +56,14 @@ public class ComponentIntentFilter {
     public void setCategories(List<String> categories) {
         this.categories = categories;
     }
-    
+
     /**
      * @return the actions
      */
     public List<String> getActions() {
         return actions;
     }
-    
+
     /**
      * @param actions
      *            the actions to set
@@ -71,5 +71,5 @@ public class ComponentIntentFilter {
     public void setActions(List<String> actions) {
         this.actions = actions;
     }
-    
+
 }

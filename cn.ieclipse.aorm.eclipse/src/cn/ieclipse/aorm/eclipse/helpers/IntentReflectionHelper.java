@@ -19,18 +19,10 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IClasspathContainer;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.JavaRuntime;
 
 import cn.ieclipse.aorm.eclipse.AormPlugin;
 
@@ -42,14 +34,16 @@ import cn.ieclipse.aorm.eclipse.AormPlugin;
  * 
  */
 public class IntentReflectionHelper {
-    
+
     private static final String ACTION_PREFIX = "ACTION_";
     private static final String CATEGORY_PREFIX = "CATEGORY_";
-    
+    private static final String PERMISSION_PREFIX = "android.permission";
+
     private final Set<String> categories = new TreeSet<String>();
     private final Set<String> actions = new TreeSet<String>();
+    private final Set<String> permissions = new TreeSet<String>();
     private final IJavaProject javaProject;
-    
+
     /**
      * Constructor.
      * 
@@ -59,7 +53,7 @@ public class IntentReflectionHelper {
     public IntentReflectionHelper(IJavaProject javaProject) {
         this.javaProject = javaProject;
     }
-    
+
     /**
      * Get the intent categories.
      * 
@@ -71,7 +65,7 @@ public class IntentReflectionHelper {
         }
         return categories;
     }
-    
+
     /**
      * Get the intent actions.
      * 
@@ -83,7 +77,19 @@ public class IntentReflectionHelper {
         }
         return actions;
     }
-    
+
+    /**
+     * Get the Manifest permissions.
+     * 
+     * @return Set of Manifest permissions.
+     */
+    public Set<String> getPermissions() {
+        if (permissions.isEmpty()) {
+            init();
+        }
+        return permissions;
+    }
+
     /**
      * Get categories and actions from the Intent.class
      */
@@ -91,7 +97,8 @@ public class IntentReflectionHelper {
         try {
             ClassLoader classLoader = IntentReflectionHelper.class
                     .getClassLoader();
-            File androidJar = new File(getAndroidJarFromClasspath(javaProject));
+            File androidJar = new File(
+                    ProjectHelper.getAndroidJarFromClasspath(javaProject));
             URL url = androidJar.toURI().toURL();
             URL[] urls = new URL[] { url };
             URLClassLoader urlCL = new URLClassLoader(urls, classLoader);
@@ -101,9 +108,21 @@ public class IntentReflectionHelper {
             for (Field field : declaredFields) {
                 if (field.getName().startsWith(CATEGORY_PREFIX)) {
                     categories.add((String) field.get(null));
-                }
-                else if (field.getName().startsWith(ACTION_PREFIX)) {
+                } else if (field.getName().startsWith(ACTION_PREFIX)) {
                     actions.add((String) field.get(null));
+                }
+            }
+
+            Class<?> permission = Class.forName("android.Manifest$permission",
+                    true, urlCL);
+            declaredFields = permission.getDeclaredFields();
+            for (Field field : declaredFields) {
+                Object temp = field.get(null);
+                if (temp instanceof String) {
+                    String str = (String) temp;
+                    if (str.startsWith(PERMISSION_PREFIX)) {
+                        permissions.add(str);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -112,60 +131,5 @@ public class IntentReflectionHelper {
                     (Object[]) null);
         }
     }
-    
-    /**
-     * Get the android.jar from the classpath.
-     * 
-     * @param javaProject
-     *            current project
-     * @return classpathentry for the android.jar or null if not found
-     */
-    public String getAndroidJarFromClasspath(IJavaProject javaProject) {
-        String result = null;
-        try {
-            String[] classpathEntries = getJavaClasspath(javaProject);
-            for (String entry : classpathEntries) {
-                if (entry.contains("android.jar")) {
-                    result = entry;
-                    break;
-                }
-            }
-        } catch (CoreException e) {
-            // result will be null
-        }
-        return result;
-    }
-    
-    /**
-     * Get all classpathentries for the given project.
-     * 
-     * @param javaProject
-     *            project to get the classpath for.
-     * @return classpathentries
-     */
-    private String[] getJavaClasspath(IJavaProject javaProject)
-            throws CoreException {
-        List<String> classPath = new ArrayList<String>();
-        String[] defaultClassPath = JavaRuntime
-                .computeDefaultRuntimeClassPath(javaProject);
-        classPath.addAll(Arrays.asList(defaultClassPath));
-        
-        // add CPE_CONTAINER classpathes
-        IClasspathEntry[] rawClasspath = javaProject.getRawClasspath();
-        for (IClasspathEntry entry : rawClasspath) {
-            if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-                IClasspathContainer classpathContainer = JavaCore
-                        .getClasspathContainer(entry.getPath(), javaProject);
-                if (classpathContainer != null) {
-                    IClasspathEntry[] classpathEntries = classpathContainer
-                            .getClasspathEntries();
-                    for (IClasspathEntry cEntry : classpathEntries) {
-                        classPath.add(cEntry.getPath().toOSString());
-                    }
-                }
-            }
-        }
-        return classPath.toArray(new String[] {});
-    }
-    
+
 }

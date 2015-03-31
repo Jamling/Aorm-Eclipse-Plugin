@@ -24,7 +24,7 @@ public interface AdtConstants {
     String SERVICE_QNAME = "android.app.Service";
     String RECEIVER_QNAME = "android.content.BroadcastReceiver";
     String PROVIDER_QNAME = "android.content.ContentProvider";
-    
+
     String ACTIVITY_NODE = "activity";
     String SERVICE_NODE = "service";
     String RECEIVER_NODE = "receiver";

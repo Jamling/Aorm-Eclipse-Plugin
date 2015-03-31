@@ -5,7 +5,7 @@
 	<extension point="org.eclipse.ui.popupMenus">
 		<objectContribution objectClass="java.lang.Object"
 			id="cn.ieclipse.aorm.eclipse.contribution1">
-			<menu icon="res/ic_aorm.png" id="cn.ieclipse.aorm.eclipse.menu1"
+			<menu icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.menu1"
 				label="%menu.label" path="additions">
 				<separator name="group1">
 				</separator>
@@ -45,18 +45,17 @@
 			<action class="cn.ieclipse.aorm.eclipse.actions.EditActivityAction"
 				enablesFor="1" icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.editActivity"
 				label="%action.label.1" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group1">
+      <enablement>
+         <objectState
+               name="ieclipse.type"
+               value="activity">
+         </objectState>
+      </enablement>
+				<!--
 				<enablement>
 					<objectState name="type" value="activity">
 					</objectState>
-				</enablement>
-			</action>
-			<action class="cn.ieclipse.aorm.eclipse.actions.EditProviderAction"
-				enablesFor="1" icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.editProvider"
-				label="%action.label.2" menubarPath="cn.ieclipse.aorm.eclipse.menu1/group1">
-				<enablement>
-					<objectState name="type" value="provider">
-					</objectState>
-				</enablement>
+				</enablement>-->
 			</action>
 			<action class="cn.ieclipse.aorm.eclipse.actions.NewActivityAction"
 				icon="res/android-16.png" id="cn.ieclipse.aorm.eclipse.popup.newActivity"
@@ -105,13 +104,6 @@
 			</newWizardShortcut>
 		</perspectiveExtension>
 	</extension>
-	<extension point="org.eclipse.core.runtime.adapters">
-		<factory adaptableType="org.eclipse.jdt.core.ICompilationUnit"
-			class="cn.ieclipse.aorm.eclipse.popup.actions.EditCompAdapterFactory">
-			<adapter type="org.eclipse.ui.IActionFilter">
-			</adapter>
-		</factory>
-	</extension>
 	<extension point="org.eclipse.ui.newWizards">
 		<wizard canFinishEarly="false"
 			category="com.android.ide.eclipse.wizards.category" class="cn.ieclipse.aorm.eclipse.wizards.NewActivityWizard"
@@ -131,4 +123,21 @@
 			project="false">
 		</wizard>
 	</extension>
+ <extension
+       point="org.eclipse.ui.startup">
+    <startup
+          class="cn.ieclipse.aorm.eclipse.Startup"></startup>
+ </extension>
+ <!--
+ <extension
+       point="org.eclipse.core.runtime.adapters">
+    <factory
+          adaptableType="org.eclipse.ui.IActionFilter"
+          class="cn.ieclipse.aorm.eclipse.popup.actions.EditCompAdapterFactory">
+       <adapter
+             type="org.eclipse.jdt.core.ICompilationUnit">
+       </adapter>
+    </factory>
+ </extension>
+ -->
 </plugin>

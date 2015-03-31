@@ -159,7 +159,7 @@ public class SourceAnalysis {
             } else {
                 sb.append(type);
             }
-            
+
             if (haveNotNull) {
                 sb.append(' ');
                 sb.append(notNull ? "NOT NULL " : "");

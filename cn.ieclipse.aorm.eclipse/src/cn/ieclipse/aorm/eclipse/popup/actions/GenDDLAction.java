@@ -36,27 +36,27 @@ import cn.ieclipse.aorm.eclipse.jdt.SourceAnalysis;
  * 
  */
 public class GenDDLAction implements IObjectActionDelegate {
-    
+
     private Shell shell;
-    
+
     private IJavaProject project;
-    
+
     private ISelection selection;
-    
+
     /**
      * Constructor for Action1.
      */
     public GenDDLAction() {
         super();
     }
-    
+
     /**
      * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
      */
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         shell = targetPart.getSite().getShell();
     }
-    
+
     /**
      * @see IActionDelegate#run(IAction)
      */
@@ -83,8 +83,7 @@ public class GenDDLAction implements IObjectActionDelegate {
             for (int i = 0; i < lines.length; i++) {
                 if (i == 0) {
                     sb2.append("sql=\"");
-                }
-                else {
+                } else {
                     sb2.append("sql+=\"");
                 }
                 sb2.append(lines[i]);
@@ -95,49 +94,45 @@ public class GenDDLAction implements IObjectActionDelegate {
             sb2.append(SourceAnalysis.LF);
         }
         sb.append(sb2);
-        
+
         InputStream source = new ByteArrayInputStream(sb.toString().getBytes());
         IFile file = project.getProject().getFile(table + ".sql");
         try {
             if (file.exists()) {
                 file.setContents(source, 0, null);
-            }
-            else {
+            } else {
                 file.create(source, true, null);
             }
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
-    
+
     public String getType(Class<?> fieldType) {
         String colType = "String";
         if (byte[].class.equals(fieldType)) {
             colType = "Blob";
-        }
-        else if (float.class.equals(fieldType) || Float.class.equals(fieldType)) {
+        } else if (float.class.equals(fieldType)
+                || Float.class.equals(fieldType)) {
             colType = "Float";
-        }
-        else if (double.class.equals(fieldType)
+        } else if (double.class.equals(fieldType)
                 || Double.class.equals(fieldType)) {
             colType = "Double";
-        }
-        else if (int.class.equals(fieldType) || Integer.class.equals(fieldType)) {
+        } else if (int.class.equals(fieldType)
+                || Integer.class.equals(fieldType)) {
             colType = "Integer";
-        }
-        else if (long.class.equals(fieldType) || Long.class.equals(fieldType)) {
+        } else if (long.class.equals(fieldType) || Long.class.equals(fieldType)) {
             colType = "Long";
-        }
-        else if (short.class.equals(fieldType) || Short.class.equals(fieldType)) {
+        } else if (short.class.equals(fieldType)
+                || Short.class.equals(fieldType)) {
             colType = "Short";
-        }
-        else if (String.class.equals(fieldType)) {
+        } else if (String.class.equals(fieldType)) {
             colType = "String";
         }
-        
+
         return colType;
     }
-    
+
     /**
      * project.getProject().getFile(
      * 
@@ -146,5 +141,5 @@ public class GenDDLAction implements IObjectActionDelegate {
     public void selectionChanged(IAction action, ISelection selection) {
         this.selection = selection;
     }
-    
+
 }

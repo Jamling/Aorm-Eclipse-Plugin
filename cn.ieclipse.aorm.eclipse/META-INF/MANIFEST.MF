@@ -12,9 +12,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.jdt.ui,
  org.eclipse.jface.text,
- org.eclipse.jdt.launching
+ org.eclipse.jdt.launching,
+ com.android.ide.eclipse.adt,
+ com.android.ide.eclipse.base
 Eclipse-BundleShape: dir
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  libs/
+Bundle-ActivationPolicy: lazy

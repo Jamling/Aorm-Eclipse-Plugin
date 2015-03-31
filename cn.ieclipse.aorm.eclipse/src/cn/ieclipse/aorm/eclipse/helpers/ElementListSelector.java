@@ -39,14 +39,14 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
  * 
  */
 public class ElementListSelector {
-    
+
     private final Button addButton;
     private final Button removeButton;
     private final Object[] elements;
     private final Set<String> selectedElements = new TreeSet<String>();
-    
+
     private final List list;
-    
+
     public ElementListSelector(final Composite composite, GridData gridData,
             final String groupDescr, final String selectionMessage,
             final Object[] elements) {
@@ -55,11 +55,11 @@ public class ElementListSelector {
         intentGroup.setLayout(new GridLayout(2, false));
         intentGroup.setLayoutData(gridData);
         intentGroup.setText(groupDescr);
-        
+
         list = new List(intentGroup, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL);
-        
+
         list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        
+
         Composite buttonComp = new Composite(intentGroup, SWT.NONE);
         buttonComp.setLayout(new FillLayout(SWT.VERTICAL));
         addButton = new Button(buttonComp, SWT.NONE);
@@ -68,11 +68,11 @@ public class ElementListSelector {
             public void widgetSelected(SelectionEvent e) {
                 showSelectionDialog(composite, selectionMessage);
             }
-            
+
             public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
-        
+
         removeButton = new Button(buttonComp, SWT.NONE);
         removeButton.setText("Remove...");
         removeButton.addSelectionListener(new SelectionListener() {
@@ -86,14 +86,14 @@ public class ElementListSelector {
                     list.update();
                 }
             }
-            
+
             public void widgetDefaultSelected(SelectionEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
         });
     }
-    
+
     private void showSelectionDialog(Composite composite,
             String selectionMessage) {
         LabelProvider labelProvider = new LabelProvider();
@@ -116,7 +116,7 @@ public class ElementListSelector {
             list.update();
         }
     }
-    
+
     /**
      * @return selected elements
      */

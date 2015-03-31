@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="cn.ieclipse.aorm.eclipse.feature"
-      label="Android ORM Feature"
-      version="3.5.0.1"
+      label="Android ADT extension feature"
+      version="3.5.0.2"
       provider-name="ieclipse.cn">
 
    <description url="https://github.com/Jamling/Aorm-Eclipse-Plugin">

@@ -27,19 +27,19 @@ import cn.ieclipse.aorm.eclipse.helpers.Status;
  * @author Jamling
  */
 public class AormPlugin extends AbstractUIPlugin {
-    
+
     // The plug-in ID
     public static final String PLUGIN_ID = "cn.ieclipse.aorm.eclipse"; //$NON-NLS-1$
-    
+
     // The shared instance
     private static AormPlugin plugin;
-    
+
     /**
      * The constructor
      */
     public AormPlugin() {
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -51,7 +51,7 @@ public class AormPlugin extends AbstractUIPlugin {
         super.start(context);
         plugin = this;
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -63,7 +63,7 @@ public class AormPlugin extends AbstractUIPlugin {
         plugin = null;
         super.stop(context);
     }
-    
+
     /**
      * Returns the shared instance
      * 
@@ -72,7 +72,7 @@ public class AormPlugin extends AbstractUIPlugin {
     public static AormPlugin getDefault() {
         return plugin;
     }
-    
+
     /**
      * Returns an image descriptor for the image file at the given plug-in
      * relative path
@@ -84,7 +84,7 @@ public class AormPlugin extends AbstractUIPlugin {
     public static ImageDescriptor getImageDescriptor(String path) {
         return imageDescriptorFromPlugin(PLUGIN_ID, path);
     }
-    
+
     public static void log(int severity, String format, Object... args) {
         if (format == null) {
             return;
@@ -95,27 +95,25 @@ public class AormPlugin extends AbstractUIPlugin {
         status.setSeverity(severity);
         if (getDefault() != null) {
             getDefault().getLog().log(status);
-        }
-        else {
+        } else {
             ((severity < 4) ? System.out : System.err).println(status
                     .toString());
         }
     }
-    
+
     public static void log(Throwable exception, String format, Object... args) {
         String message = null;
         if (format != null)
             message = String.format(format, args);
         else
             message = "";
-        
+
         Status status = new Status();
         status.setError(message);
         status.setException(exception);
         if (getDefault() != null) {
             getDefault().getLog().log(status);
-        }
-        else {
+        } else {
             System.err.println(status.toString());
         }
     }

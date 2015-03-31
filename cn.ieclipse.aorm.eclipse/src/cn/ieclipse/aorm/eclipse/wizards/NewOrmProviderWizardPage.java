@@ -55,15 +55,15 @@ import cn.ieclipse.aorm.eclipse.jdt.SourceGenerator;
  */
 
 public class NewOrmProviderWizardPage extends NewProviderWizardPage {
-    
+
     private JavaSelection javaSelection;
     private Table table;
-    
+
     private Text databaseText;
     private String database;
     private IStatus databaseStatus;
     private List<TypeMapping> mapList;
-    
+
     // /**
     // * Constructor for SampleNewWizardPage.
     // *
@@ -74,14 +74,14 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
     // setTitle("Android ContentProvider");
     // setDescription("Create a new Android ContentProvider.");
     // }
-    
+
     @Override
     protected void createOtherControls(Composite composite, int nColumns) {
         super.createOtherControls(composite, nColumns);
         createDatabase(composite, nColumns);
         createTableArea(composite, nColumns);
     }
-    
+
     private void createDatabase(Composite composite, int nColumns) {
         Label label = new Label(composite, SWT.NONE);
         label.setText("Database Name:");
@@ -95,21 +95,21 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
         });
         new Label(composite, SWT.NONE);
     }
-    
+
     private void createTableArea(Composite composite, int nColumns) {
         // Group group = new Group(composite, SWT.NONE);
         // group.setText("select tables which you want to generate DDL");
         // group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
         // nColumns, 2));
         // group.setLayout(new FillLayout());
-        
+
         Label label = new Label(composite, SWT.NONE);
         label.setText("select tables which you want to generate DDL");
         label.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false,
                 nColumns, 1));
-        
+
         // new Label(composite, SWT.NONE);
-        
+
         table = new Table(composite, SWT.H_SCROLL | SWT.V_SCROLL
                 | SWT.FULL_SELECTION | SWT.CHECK | SWT.BORDER);
         table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
@@ -117,23 +117,23 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
         TableLayout layout = new TableLayout();
-        
+
         layout.addColumnData(new ColumnWeightData(5, 25, true));
         layout.addColumnData(new ColumnWeightData(20, 75, true));
         layout.addColumnData(new ColumnWeightData(70, true));
         table.setLayout(layout);
-        
+
         TableColumn checkCol = new TableColumn(table, SWT.NONE);
         checkCol.setText("");
-        
+
         TableColumn tableCol = new TableColumn(table, SWT.NONE);
         tableCol.setText("Table");
         // tableCol.setImage(AormPlugin.getImageDescriptor("res/table.png").createImage());
-        
+
         TableColumn typeCol = new TableColumn(table, SWT.NONE);
         typeCol.setText("Class");
         // typeCol.setImage(AormPlugin.getImageDescriptor("res/class.gif").createImage());
-        
+
         for (final TypeMapping type : mapList) {
             final TableItem ti = new TableItem(table, SWT.NONE);
             ti.setChecked(true);
@@ -142,26 +142,26 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
             ti.setText(new String[] { "", type.getTable(),
                     type.getType().getFullyQualifiedName() });
             ti.addListener(SWT.MouseDown, new Listener() {
-                
+
                 public void handleEvent(Event event) {
                     type.setChecked(ti.getChecked());
                 }
             });
-            
+
         }
-        
+
     }
-    
+
     /**
      * Tests if the current workbench selection is a suitable container to use.
      */
-    
+
     public void init(IStructuredSelection selection) {
         super.init(selection);
         javaSelection = new JavaSelection(selection);
         mapList = javaSelection.getTypeMappings();
     }
-    
+
     @Override
     protected IStatus[] getUpdateStatus() {
         IStatus[] status = super.getUpdateStatus();
@@ -170,35 +170,33 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
         dest[status.length] = databaseStatus;
         return dest;
     }
-    
+
     @Override
     protected void handleFieldChanged(String fieldName) {
         super.handleFieldChanged(fieldName);
         databaseStatus = databaseChanged();
         doStatusUpdate();
     }
-    
+
     private IStatus databaseChanged() {
         Status status = new Status();
         if (databaseText != null) {
             database = databaseText.getText().trim();
             if (database.length() <= 0) {
                 status.setError("database name can't be empty!");
-            }
-            else if (!database.endsWith(".db")) {
+            } else if (!database.endsWith(".db")) {
                 status.setWarning("database name should with .db suffix");
-            }
-            else {
+            } else {
                 status.setOK();
             }
         }
         return status;
     }
-    
+
     public String getDatabase() {
         return database;
     }
-    
+
     public List<TypeMapping> getTypeMappings() {
         // final List<TypeMapping> list = new
         // ArrayList<JavaSelection.TypeMapping>();
@@ -213,19 +211,19 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
         //
         // }
         // }
-        
+
         return mapList;
     }
-    
+
     @Override
     protected void createTypeMembers(IType newType, ImportsManager imports,
             IProgressMonitor monitor) throws CoreException {
         // super.createTypeMembers(newType, imports, monitor);
         createInheritedMethods(newType, false, true, imports,
                 new SubProgressMonitor(monitor, 1));
-        
+
         final List<String> tableCreators = new ArrayList<String>();
-        
+
         List<TypeMapping> list = getTypeMappings();
         for (TypeMapping map : list) {
             if (map.isChecked()) {
@@ -233,13 +231,13 @@ public class NewOrmProviderWizardPage extends NewProviderWizardPage {
             }
         }
         ICompilationUnit cu = newType.getCompilationUnit();
-        
+
         try {
             // CompilationUnit unit = SourceGenerator.merge(cu,
             // getPackageText(), getTypeName(),
             // getAuthority(), getDatabase(), tableCreators);
             // SourceGenerator.applyChange(cu, unit);
-            
+
             imports.addImport("android.database.sqlite.SQLiteDatabase");
             imports.addImport("android.database.sqlite.SQLiteOpenHelper");
             imports.addImport("cn.ieclipse.aorm.Session");

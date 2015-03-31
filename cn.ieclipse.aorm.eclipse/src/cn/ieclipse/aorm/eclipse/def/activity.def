@@ -1,45 +1,43 @@
 <activity 
-          android:name="string"
-          android:label="string resource"
-          android:icon="drawable resource"
-          android:theme="resource or theme"
-          android:launchMode=["multiple" | "singleTop" |
-                              "singleTask" | "singleInstance"]
+          android:allowEmbedded=["true" | "false"]
+          android:allowTaskReparenting=["true" | "false"]
+          android:alwaysRetainTaskState=["true" | "false"]
+          android:clearTaskOnLaunch=["true" | "false"]
           android:configChanges=["mcc", "mnc", "locale",
                                  "touchscreen", "keyboard", "keyboardHidden",
                                  "navigation", "screenLayout", "fontScale", "uiMode",
                                  "orientation", "screenSize", "smallestScreenSize"]
           android:enabled=["true" | "false"]
+          android:excludeFromRecents=["true" | "false"]
           android:exported=["true" | "false"]
           android:finishOnTaskLaunch=["true" | "false"]
-          android:excludeFromRecents=["true" | "false"]
-
-          android:clearTaskOnLaunch=["true" | "false"]
-
-
           android:hardwareAccelerated=["true" | "false"]
-
-
+          android:icon="drawable resource"
+          android:label="string resource"
+          android:launchMode=["multiple" | "singleTop" |
+                              "singleTask" | "singleInstance"]
+          android:multiprocess=["true" | "false"]
+          android:name="string"
           android:noHistory=["true" | "false"]  
+          android:parentActivityName="string" 
           android:permission="string"
           android:process="string"
-          android:screenOrientation=["unspecified" | "user" | "behind" |
+          android:screenOrientation=["unspecified" | "behind" |
                                      "landscape" | "portrait" |
                                      "reverseLandscape" | "reversePortrait" |
                                      "sensorLandscape" | "sensorPortrait" |
-                                     "sensor" | "fullSensor" | "nosensor"]
-          android:multiprocess=["true" | "false"]
-
-          android:parentActivityName="string" 
-          android:alwaysRetainTaskState=["true" | "false"]
-          android:allowTaskReparenting=["true" | "false"]
+                                     "userLandscape" | "userPortrait" |
+                                     "sensor" | "fullSensor" | "nosensor" |
+                                     "user" | "fullUser" | "locked"]
           android:stateNotNeeded=["true" | "false"]
           android:taskAffinity="string"
-
+          android:theme="resource or theme"
           android:uiOptions=["none" | "splitActionBarWhenNarrow"]
           android:windowSoftInputMode=["stateUnspecified",
                                        "stateUnchanged", "stateHidden",
                                        "stateAlwaysHidden", "stateVisible",
                                        "stateAlwaysVisible", "adjustUnspecified",
                                        "adjustResize", "adjustPan"] >   
+    <intent-filter />
+    <meta-data />
 </activity>

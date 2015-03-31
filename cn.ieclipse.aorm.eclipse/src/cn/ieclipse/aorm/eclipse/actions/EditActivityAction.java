@@ -18,7 +18,7 @@ package cn.ieclipse.aorm.eclipse.actions;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IWorkbenchWizard;
 
-import cn.ieclipse.aorm.eclipse.wizards.EditActivityWizard;
+import cn.ieclipse.aorm.eclipse.wizards.EditComponentWizard;
 
 /**
  * Edit activity action to open editing activity wizard page.
@@ -27,10 +27,10 @@ import cn.ieclipse.aorm.eclipse.wizards.EditActivityWizard;
  * 
  */
 public class EditActivityAction extends OpenWizardAction {
-    
+
     @Override
     protected IWorkbenchWizard instanciateWizard(IAction paramIAction) {
-        return new EditActivityWizard();
+        return new EditComponentWizard();
     }
-    
+
 }

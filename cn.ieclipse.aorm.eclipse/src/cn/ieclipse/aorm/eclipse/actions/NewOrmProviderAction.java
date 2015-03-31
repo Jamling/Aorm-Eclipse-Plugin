@@ -27,10 +27,10 @@ import cn.ieclipse.aorm.eclipse.wizards.NewOrmProviderWizard;
  * 
  */
 public class NewOrmProviderAction extends OpenWizardAction {
-    
+
     @Override
     protected IWorkbenchWizard instanciateWizard(IAction paramIAction) {
         return new NewOrmProviderWizard();
     }
-    
+
 }

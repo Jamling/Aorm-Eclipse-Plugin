@@ -48,36 +48,35 @@ public abstract class OpenWizardAction implements
     private int mDialogResult;
     private ISelection mSelection;
     private IWorkbench mWorkbench;
-    
+
     public IWorkbenchWizard getWizard() {
         return this.mWizard;
     }
-    
+
     public int getDialogResult() {
         return this.mDialogResult;
     }
-    
+
     public void dispose() {
     }
-    
+
     public void init(IWorkbenchWindow window) {
     }
-    
+
     public void run(IAction action) {
         IWorkbench workbench = (this.mWorkbench != null) ? this.mWorkbench
                 : PlatformUI.getWorkbench();
         IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-        
+
         ISelection selection = this.mSelection;
         if (selection == null) {
             selection = window.getSelectionService().getSelection();
         }
-        
+
         IStructuredSelection selectionToPass = StructuredSelection.EMPTY;
         if (selection instanceof IStructuredSelection) {
             selectionToPass = (IStructuredSelection) selection;
-        }
-        else {
+        } else {
             IWorkbenchPart part = window.getPartService().getActivePart();
             if (part instanceof IEditorPart) {
                 IEditorInput input = ((IEditorPart) part).getEditorInput();
@@ -88,18 +87,18 @@ public abstract class OpenWizardAction implements
                         selectionToPass = new StructuredSelection(file);
                     }
                 }
-                
+
             }
-            
+
         }
-        
+
         this.mWizard = instanciateWizard(action);
         this.mWizard.init(workbench, selectionToPass);
-        
+
         Shell parent = window.getShell();
         WizardDialog dialog = new WizardDialog(parent, this.mWizard);
         dialog.create();
-        
+
         // Point defaultSize = dialog.getShell().getSize();
         // dialog.getShell().setSize(
         // Math.max(500, defaultSize.x),
@@ -108,16 +107,16 @@ public abstract class OpenWizardAction implements
                 .getHelpSystem()
                 .setHelp(dialog.getShell(),
                         "org.eclipse.ui.new_wizard_shortcut_context");
-        
+
         this.mDialogResult = dialog.open();
     }
-    
+
     protected abstract IWorkbenchWizard instanciateWizard(IAction paramIAction);
-    
+
     public void selectionChanged(IAction action, ISelection selection) {
         this.mSelection = selection;
     }
-    
+
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         this.mWorkbench = targetPart.getSite().getWorkbenchWindow()
                 .getWorkbench();
