@@ -1,0 +1,96 @@
+<dl class="attr">
+
+<dt><a name="scheme"></a><code>android:scheme</code></dt>
+<dd>The scheme part of a URI.  This is the minimal essential attribute for
+specifying a URI; at least one <code>scheme</code> attribute must be set
+for the filter, or none of the other URI attributes are meaningful.
+
+<p>
+A scheme is specified without the trailing colon (for example,
+<code>http</code>, rather than <code>http:</code>).
+</p>
+
+<p>
+If the filter has a data type set (the <code><a href="#">mimeType</a></code>
+attribute) but no scheme, the <code>content:</code> and <code>file:</code> schemes are
+assumed.
+</p>
+
+<p class="note"><strong>Note</strong>: Scheme matching in the Android framework is
+case-sensitive, unlike the RFC.  As a result, you should always specify schemes
+using lowercase letters.</p>
+</dd>
+
+<dt><a name="host"></a><code>android:host</code></dt>
+<dd>The host part of a URI authority.  This attribute is meaningless
+unless a <code><a href="#">scheme</a></code> attribute is also
+specified for the filter.
+
+<p class="note"><strong>Note</strong>: host name matching in the Android framework is
+case-sensitive, unlike the formal RFC.  As a result, you should always specify
+host names using lowercase letters.</p>
+</dd>
+
+
+<dt><a name="port"></a><code>android:port</code></dt>
+<dd>The port part of a URI authority.  This attribute is meaningful only
+if the <code><a href="#">scheme</a></code> and
+<code><a href="#">host</a></code> attributes are also specified for
+the filter.</dd>
+
+
+<dt><a name="path"></a><code>android:path</code>
+<br/><code>android:pathPrefix</code>
+<br/><code>android:pathPattern</code></dt>
+<dd>The path part of a URI which must begin with a /.
+The <code>path</code> attribute specifies a complete
+path that is matched against the complete path in an Intent object.  The
+<code>pathPrefix</code> attribute specifies a partial path that is matched against
+only the initial part of the path in the Intent object.  The <code>pathPattern</code>
+attribute specifies a complete path that is matched against the complete path
+in the Intent object, but it can contain the following wildcards:
+
+<ul>
+<li>An asterisk ('<code>*</code>') matches a sequence of 0 to many occurrences of
+the immediately preceding character.</li>
+
+<li>A period followed by an asterisk ("<code>.*</code>") matches any sequence of
+0 to many characters.</li>
+</ul>
+
+<p>
+Because '<code>\</code>' is used as an escape character when the string is read
+from XML (before it is parsed as a pattern), you will need to double-escape:
+For example, a literal '<code>*</code>' would be written as "<code>\\*</code>" and a
+literal '<code>\</code>' would be written as "<code>\\\\</code>".  This is basically
+the same as what you would need to write if constructing the string in Java code.
+</p>
+
+<p>
+For more information on these three types of patterns, see the descriptions of
+<code><a href="#">PATTERN_LITERAL</a></code>,
+<code><a href="#">PATTERN_PREFIX</a></code>, and
+<code><a href="#">PATTERN_SIMPLE_GLOB</a></code> in the
+<code><a href="#">PatternMatcher</a></code> class.
+</p>
+
+<p>These attributes are meaningful only if the
+<code><a href="#">host</a></code>
+attributes are also specified for the filter.
+</p></dd>
+
+<dt><a name="mime"></a><code>android:mimeType</code></dt>
+<dd>A MIME media type, such as <code>image/jpeg</code> or <code>audio/mpeg4-generic</code>.
+The subtype can be the asterisk wildcard (<code>*</code>) to indicate that any
+subtype matches.
+
+<p>It's common for an intent filter to declare a <code>&lt;data&gt;</code> that includes
+only the <code>android:mimeType</code> attribute.</p>
+
+
+<p class="note"><strong>Note</strong>: MIME type matching in the Android framework is
+case-sensitive, unlike formal RFC MIME types.  As a result, you should always
+specify MIME types using lowercase letters.</p>
+</dd>
+
+</dl>

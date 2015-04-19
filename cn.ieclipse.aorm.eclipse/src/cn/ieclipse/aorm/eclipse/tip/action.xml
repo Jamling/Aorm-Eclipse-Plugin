@@ -1,0 +1,19 @@
+<dl class="attr">
+<dt><a name="nm"></a><code>android:name</code></dt>
+<dd>The name of the action.  Some standard actions are defined in the
+<code><a href="#">Intent</a></code> class as 
+<code>ACTION_<i>string</i></code> constants.  To assign one of these actions to 
+this attribute, prepend "<code>android.intent.action.</code>" to the 
+<code><i>string</i></code> that follows <code>ACTION_</code>.
+For example, for <code>ACTION_MAIN</code>, use "<code>android.intent.action.MAIN</code>"
+and for <code>ACTION_WEB_SEARCH</code>, use "<code>android.intent.action.WEB_SEARCH</code>".
+
+<p>
+For actions you define, it's best to use the package name as a prefix to
+ensure uniqueness.  For example, a <code>TRANSMOGRIFY</code> action might be specified 
+as follows:
+</p>
+
+<pre>&lt;action android:name="com.example.project.TRANSMOGRIFY" /&gt;</pre>
+</dd>
+</dl>

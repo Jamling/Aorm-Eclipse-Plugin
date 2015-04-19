@@ -1,0 +1,39 @@
+<dl class="attr">
+<dt><a name="nm"></a><code>android:name</code></dt>
+<dd>A unique name for the item.  To ensure that the name is unique, use a 
+Java-style naming convention — for example, 
+"<code>com.example.project.activity.fred</code>".</dd>
+
+<dt><a name="rsrc"></a><code>android:resource</code></dt>
+<dd>A reference to a resource.  The ID of the resource is the value assigned 
+to the item.  The ID can be retrieved from the meta-data Bundle by the 
+<code><a href="#">Bundle.getInt()</a></code> method.</dd>
+
+<dt><a name="val"></a><code>android:value</code></dt>
+<dd>The value assigned to the item.  The data types that can be assigned as values and the Bundle methods that  components use to retrieve those values are listed in the following table:
+
+<table>
+<tbody><tr>
+  <th>Type</th>
+  <th>Bundle method</th>
+</tr><tr>
+  <td>String value, using double backslashes (<code>\\</code>) to escape characters 
+      — such as "<code>\\n</code>" and "<code>\\uxxxxx</code>" for a Unicode character.</td>
+  <td><code><a href="#">getString()</a></code></td>
+</tr><tr>
+  <td>Integer value, such as "<code>100</code>"</td>
+  <td><code><a href="#">getInt()</a></code></td>
+</tr><tr>
+  <td>Boolean value, either "<code>true</code>" or "<code>false</code>"</td>
+  <td><code><a href="#">getBoolean()</a></code></td>
+</tr><tr>
+  <td>Color value, in the form "<code>#rgb</code>", "<code>#argb</code>", 
+      "<code>#rrggbb</code>", or "<code>#aarrggbb</code>"</td>
+  <td><code><a href="#">getInt()</a></code></td>
+</tr><tr>
+  <td>Float value, such as "<code>1.23</code>"</td>
+  <td><code><a href="#">getFloat()</a></code></td>
+</tr>
+</tbody></table>
+</dd>
+</dl>

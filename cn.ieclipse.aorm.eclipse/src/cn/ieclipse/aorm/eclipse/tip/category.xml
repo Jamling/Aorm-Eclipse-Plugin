@@ -1,0 +1,23 @@
+<dl class="attr">
+<dt><a name="nm"></a><code>android:name</code></dt>
+<dd>The name of the category.  Standard categories are defined in the 
+<code><a href="#">Intent</a></code> class as <code>CATEGORY_<i>name</i></code> 
+constants.  The name assigned here can be derived from those constants 
+by prefixing "<code>android.intent.category.</code>" to the 
+<code><i>name</i></code> that follows <code>CATEGORY_</code>.  For example,
+the string value for <code>CATEGORY_LAUNCHER</code> is 
+"<code>android.intent.category.LAUNCHER</code>".
+
+<p class="note"><strong>Note:</strong> In order to receive implicit intents, you must include the
+<code><a href="#">CATEGORY_DEFAULT</a></code> category in the intent filter. The methods
+<code><a href="#">startActivity()</a></code> and
+<code><a href="#">startActivityForResult()</a></code> treat all intents
+as if they declared the <code><a href="#">CATEGORY_DEFAULT</a></code> category.
+If you do not declare it in your intent filter, no implicit intents will resolve to
+your activity.</p>
+
+<p>
+Custom categories should use the package name as a prefix, to ensure
+that they are unique.
+</p></dd>
+</dl>

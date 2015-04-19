@@ -1,0 +1,38 @@
+<dl class="attr">
+<dt><a name="path"></a><code>android:path</code>
+<br/><code>android:pathPrefix</code>
+<br/><code>android:pathPattern</code></dt>
+<dd>A path identifying the data subset or subsets that permission can be 
+granted for.  The <code>path</code> attribute specifies a complete path; 
+permission can be granted only to the particular data subset identified 
+by that path.  
+The <code>pathPrefix</code> attribute specifies the initial part of a path; 
+permission can be granted to all data subsets with paths that share that 
+initial part.   
+The <code>pathPattern</code> attribute specifies a complete path, but one 
+that can contain the following wildcards:
+
+<ul>
+<li>An asterisk ('<code>*</code>') matches a sequence of 0 to many occurrences of
+the immediately preceding character.</li>
+
+<li><p>A period followed by an asterisk ("<code>.*</code>") matches any sequence of 
+0 to many characters.</p></li>
+</ul>
+
+<p>
+Because '<code>\</code>' is used as an escape character when the string is read 
+from XML (before it is parsed as a pattern), you will need to double-escape:  
+For example, a literal '<code>*</code>' would be written as "<code>\\*</code>" and a 
+literal '<code>\</code>' would be written as "<code>\\\\</code>".  This is basically 
+the same as what you would need to write if constructing the string in Java code.
+</p>
+
+<p>
+For more information on these types of patterns, see the descriptions of 
+<code><a href="#">PATTERN_LITERAL</a></code>,
+<code><a href="#">PATTERN_PREFIX</a></code>, and
+<code><a href="#">PATTERN_SIMPLE_GLOB</a></code> in the
+<code><a href="#">PatternMatcher</a></code> class.
+</p></dd>
+</dl>

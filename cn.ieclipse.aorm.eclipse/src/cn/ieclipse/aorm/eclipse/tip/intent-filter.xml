@@ -1,0 +1,78 @@
+<dl class="attr">
+<dt><a name="icon"></a><code>android:icon</code></dt>
+<dd>An icon that represents the parent activity, service, or broadcast
+receiver when that component is presented to the user as having the 
+capability described by the filter.
+
+<p>
+This attribute must be set as a reference to a drawable resource 
+containing the image definition.  The default value is the icon set 
+by the parent component's <code>icon</code> attribute.  If the parent 
+does not specify an icon, the default is the icon set by the
+<code><a href="#">&lt;application&gt;</a></code> element.
+</p>
+
+<p>
+For more on intent filter icons, see 
+<a href="#">Icons and Labels</a>
+in the introduction.
+</p></dd>
+
+<dt><a name="label"></a><code>android:label</code></dt>
+<dd>A user-readable label for the parent component.  This label, rather than
+the one set by the parent component, is used when the component is presented
+to the user as having the capability described by the filter.
+
+<p>
+The label should be set as a reference to a string resource, so that
+it can be localized like other strings in the user interface.  
+However, as a convenience while you're developing the application, 
+it can also be set as a raw string.
+</p>
+
+<p>
+The default value is the label set by the parent component.  If the 
+parent does not specify a label, the default is the label set by the
+<code><a href="#">&lt;application&gt;</a></code> element's 
+<code><a href="#"> label</a></code> attribute.
+</p>
+
+<p>
+For more on intent filter labels, see 
+<a href="#">Icons and Labels</a>
+in the introduction.
+</p></dd>
+
+<dt><a name="priority"></a><code>android:priority</code></dt>
+<dd>The priority that should be given to the parent component with regard
+to handling intents of the type described by the filter.  This attribute has 
+meaning for both activities and broadcast receivers:
+
+<ul>
+<li>It provides information about how able an activity is to respond to 
+an intent that matches the filter, relative to other activities that could
+also respond to the intent.  When an intent could be handled by multiple 
+activities with different priorities, Android will consider only those with
+higher priority values as potential targets for the intent.</li>
+
+<li><p>It controls the order in which broadcast receivers are executed to
+receive broadcast messages.  Those with higher priority 
+values are called before those with lower values.  (The order applies only 
+to synchronous messages; it's ignored for asynchronous messages.)</p></li>
+</ul>
+
+<p>
+Use this attribute only if you really need to impose a specific order in 
+which the broadcasts are received, or want to force Android to prefer
+one activity over others.
+</p>
+
+<p>
+The value must be an integer, such as "<code>100</code>".  Higher numbers have a
+higher priority. The default value is 0.
+The value must be greater than -1000 and less than 1000.</p>
+
+<p>Also see <code><a href="#">setPriority()</a></code>.
+</p></dd>
+
+</dl>
