@@ -41,7 +41,7 @@ public class SourceAnalysis {
         typeClasses.put(long.class, "Long");
         typeClasses.put(byte[].class, "Blob");
         typeClasses.put(Byte[].class, "Blob");
-
+        
         typeClasses.put(Integer.class, "Integer");
         typeClasses.put(String.class, "String");
         typeClasses.put(Double.class, "Double");
@@ -49,36 +49,36 @@ public class SourceAnalysis {
         typeClasses.put(Short.class, "Short");
         typeClasses.put(Long.class, "Long");
     }
-
+    
     public static String getColumnBySig(String sig) {
         if (signatures.isEmpty()) {
             signatures.put("I", "Integer");
             signatures.put("QInteger;", "Integer");
-
+            
             signatures.put("F", "Float");
             signatures.put("QFloat;", "Float");
-
+            
             signatures.put("J", "Long");
             signatures.put("QLong;", "Long");
-
+            
             signatures.put("S", "Short");
             signatures.put("QShort;", "Short");
-
+            
             signatures.put("Z", "Boolean");
             signatures.put("QBoolean;", "Boolean");
-
+            
             signatures.put("[B", "Blob");
             signatures.put("[QByte;", "Blob");
-
+            
             signatures.put("QString;", "String");
-
+            
             signatures.put("D", "Double");
             signatures.put("QDouble;", "Double");
         }
         String value = signatures.get(sig);
         return value;
     }
-
+    
     public static String getSQL(TypeMapping typeMapping, boolean format) {
         StringBuilder sb = new StringBuilder();
         sb.append("create TABLE ");
@@ -101,13 +101,16 @@ public class SourceAnalysis {
                         Object mv = imvp.getValue();
                         if ("name".equals(mn)) {
                             meta.name = (String) mv;
-                        } else if ("id".equals(mn)) {
+                        }
+                        else if ("id".equals(mn)) {
                             meta.id = (Boolean) mv;
                             meta.haveId = true;
-                        } else if ("notNull".equals(mn)) {
+                        }
+                        else if ("notNull".equals(mn)) {
                             meta.notNull = (Boolean) mv;
                             meta.haveNotNull = true;
-                        } else if ("defaultValue".equals(mn)) {
+                        }
+                        else if ("defaultValue".equals(mn)) {
                             meta.defaultValue = (String) mv;
                             meta.haveDefaultValue = true;
                         }
@@ -126,47 +129,48 @@ public class SourceAnalysis {
             sb.delete(len, sb.length());
             sb.append(")");
             sb.append(LF);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
         return sb.toString();
     }
-
+    
     private static class ColumnMeta {
         String name;
         String type;
-
+        
         boolean haveDefaultValue;
         String defaultValue;
-
+        
         boolean haveNotNull;
         boolean notNull;
-
+        
         boolean haveId;
         boolean id;
-
+        
         public String toSQL() {
             StringBuilder sb = new StringBuilder();
             sb.append(name);
             sb.append(' ');
-
+            
             if (haveId && id) {
                 sb.append("Integer");
                 sb.append(' ');
                 sb.append("Primary key autoincrement");
-            } else {
+            }
+            else {
                 sb.append(type);
             }
-
             if (haveNotNull) {
                 sb.append(' ');
                 sb.append(notNull ? "NOT NULL " : "");
                 sb.append("Default '");
                 sb.append(defaultValue == null ? "" : defaultValue);
                 sb.append("'");
-            } else {
+            }
+            else {
                 if (haveDefaultValue) {
                     sb.append(' ');
                     sb.append("Default '");
