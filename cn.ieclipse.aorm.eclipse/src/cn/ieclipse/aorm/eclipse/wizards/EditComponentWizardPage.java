@@ -161,20 +161,6 @@ public class EditComponentWizardPage extends WizardPage {
         return rootNode;
     }
 
-    @Deprecated
-    public void setInitAttributes(List<ComponentAttribute> initAttrs) {
-        for (ComponentAttribute old : initAttrs) {
-            for (ComponentAttribute attr : attributes) {
-                if (old.getShortName().equals(attr.getShortName())) {
-                    attr.setValue(old.getValue());
-                    System.out.println("set " + attr.getName() + "="
-                            + attr.getValue());
-                    break;
-                }
-            }
-        }
-    }
-
     public void createControl(Composite parent) {
 
         GC gc = new GC(parent);
@@ -477,6 +463,11 @@ public class EditComponentWizardPage extends WizardPage {
                     }
                 }
                 nodeAttrCache.put(e, ce);
+                
+                ComponentAttributeTipHelper.loadHtml(e
+                        .getTagName(), ce);
+                
+                
             } catch (Exception e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
@@ -484,14 +475,12 @@ public class EditComponentWizardPage extends WizardPage {
         }
         ce.init(e);
         List<ComponentAttribute> attributes = ce.getAttributes();
-        Map<String, String> map = ComponentAttributeTipHelper.load(e
-                .getTagName());
+        
 
         boolean isAction = e.getNodeName().equals("action");
         boolean isCategory = e.getNodeName().equals("category");
 
         for (ComponentAttribute attr : attributes) {
-            attr.setTip(map.get(attr.getShortName()));
             createAttrFiled(composite, layout.numColumns, attr, ce, e);
         }
         ScrolledComposite sc = (ScrolledComposite) composite.getParent();

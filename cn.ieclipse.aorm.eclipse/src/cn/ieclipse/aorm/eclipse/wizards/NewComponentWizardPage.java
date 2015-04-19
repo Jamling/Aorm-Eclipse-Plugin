@@ -285,4 +285,8 @@ public class NewComponentWizardPage extends NewTypeWizardPage {
         }
         return null;
     }
+    
+    public String getNodeType(){
+        return null;
+    }
 }

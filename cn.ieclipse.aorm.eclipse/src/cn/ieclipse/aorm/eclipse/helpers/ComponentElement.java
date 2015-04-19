@@ -74,7 +74,7 @@ public class ComponentElement {
         Collections.sort(attrs);
     }
 
-    private ComponentAttribute findAttr(String name) {
+    public ComponentAttribute findAttr(String name) {
         for (ComponentAttribute attr : attrs) {
             if (attr.getName().equals(name)) {
                 return attr;

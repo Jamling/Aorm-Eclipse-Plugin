@@ -1,12 +1,15 @@
-<activity 
-          android:allowEmbedded=["true" | "false"]
+<activity android:allowEmbedded=["true" | "false"]
           android:allowTaskReparenting=["true" | "false"]
           android:alwaysRetainTaskState=["true" | "false"]
+          android:autoRemoveFromRecents=["true" | "false"]
+          android:banner="drawable resource"
           android:clearTaskOnLaunch=["true" | "false"]
           android:configChanges=["mcc", "mnc", "locale",
                                  "touchscreen", "keyboard", "keyboardHidden",
                                  "navigation", "screenLayout", "fontScale", "uiMode",
                                  "orientation", "screenSize", "smallestScreenSize"]
+          android:documentLaunchMode=["intoExisting", "always",
+                                  "none", "never"]
           android:enabled=["true" | "false"]
           android:excludeFromRecents=["true" | "false"]
           android:exported=["true" | "false"]
@@ -16,12 +19,14 @@
           android:label="string resource"
           android:launchMode=["multiple" | "singleTop" |
                               "singleTask" | "singleInstance"]
+          android:maxRecents="integer"
           android:multiprocess=["true" | "false"]
           android:name="string"
           android:noHistory=["true" | "false"]  
           android:parentActivityName="string" 
           android:permission="string"
           android:process="string"
+          android:relinquishTaskIdentity=["true" | "false"]
           android:screenOrientation=["unspecified" | "behind" |
                                      "landscape" | "portrait" |
                                      "reverseLandscape" | "reversePortrait" |
@@ -37,7 +42,7 @@
                                        "stateUnchanged", "stateHidden",
                                        "stateAlwaysHidden", "stateVisible",
                                        "stateAlwaysVisible", "adjustUnspecified",
-                                       "adjustResize", "adjustPan"] >   
+                                       "adjustResize", "adjustPan"] >  
     <intent-filter />
     <meta-data />
 </activity>

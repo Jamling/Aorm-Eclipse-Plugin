@@ -18,6 +18,16 @@ android:alwaysRetainTaskState
     Normally, the system clears a task (removes all activities from the stack above the root activity) in certain situations when the user re-selects that task from the home screen. Typically, this is done if the user hasn't visited the task for a certain amount of time, such as 30 minutes.
 
     However, when this attribute is "true", users will always return to the task in its last state, regardless of how they get there. This is useful, for example, in an application like the web browser where there is a lot of state (such as multiple open tabs) that users would not like to lose. 
+android:autoRemoveFromRecents
+    Whether or not tasks launched by activities with this attribute remains in the overview screen until the last activity in the task is completed. If true, the task is automatically removed from the overview screen. This overrides the caller's use of FLAG_ACTIVITY_RETAIN_IN_RECENTS. It must be a boolean value, either "true" or "false".
+android:banner
+    A drawable resource providing an extended graphical banner for its associated item. Use with the <activity> tag to supply a default banner for a specific activity, or with the <application> tag to supply a banner for all application activities.
+
+    The system uses the banner to represent an app in the Android TV home screen. Since the banner is displayed only in the home screen, it should only be specified by applications with an activity that handles the CATEGORY_LEANBACK_LAUNCHER intent.
+
+    This attribute must be set as a reference to a drawable resource containing the image (for example "@drawable/banner"). There is no default banner.
+
+    See Banners in the UI Patterns for TV design guide, and Provide a home screen banner in Get Started with TV Apps for more information. 
 android:clearTaskOnLaunch
     Whether or not all activities will be removed from the task, except for the root activity, whenever it is re-launched from the home screen — "true" if the task is always stripped down to its root activity, and "false" if not. The default value is "false". This attribute is meaningful only for activities that start a new task (the root activity); it's ignored for all other activities in the task.
 
@@ -27,14 +37,51 @@ android:clearTaskOnLaunch
 
     If this attribute and allowTaskReparenting are both "true", any activities that can be re-parented are moved to the task they share an affinity with; the remaining activities are then dropped, as described above. 
 android:configChanges
-    Lists configuration changes that the activity will handle itself. When a configuration change occurs at runtime, the activity is shut down and restarted by default, but declaring a configuration with this attribute will prevent the activity from being restarted. Instead, the activity remains running and its onConfigurationChanged() method is called. 
+    Lists configuration changes that the activity will handle itself. When a configuration change occurs at runtime, the activity is shut down and restarted by default, but declaring a configuration with this attribute will prevent the activity from being restarted. Instead, the activity remains running and its onConfigurationChanged() method is called.
+
     Note: Using this attribute should be avoided and used only as a last resort. Please read Handling Runtime Changes for more information about how to properly handle a restart due to a configuration change.
+
+    Any or all of the following strings are valid values for this attribute. Multiple values are separated by '|' — for example, "locale|navigation|orientation".
+    Value 	Description
+    "mcc" 	The IMSI mobile country code (MCC) has changed — a SIM has been detected and updated the MCC.
+    "mnc" 	The IMSI mobile network code (MNC) has changed — a SIM has been detected and updated the MNC.
+    "locale" 	The locale has changed — the user has selected a new language that text should be displayed in.
+    "touchscreen" 	The touchscreen has changed. (This should never normally happen.)
+    "keyboard" 	The keyboard type has changed — for example, the user has plugged in an external keyboard.
+    "keyboardHidden" 	The keyboard accessibility has changed — for example, the user has revealed the hardware keyboard.
+    "navigation" 	The navigation type (trackball/dpad) has changed. (This should never normally happen.)
+    "screenLayout" 	The screen layout has changed — this might be caused by a different display being activated.
+    "fontScale" 	The font scaling factor has changed — the user has selected a new global font size.
+    "uiMode" 	The user interface mode has changed — this can be caused when the user places the device into a desk/car dock or when the night mode changes. See UiModeManager. Added in API level 8.
+    "orientation" 	The screen orientation has changed — the user has rotated the device.
+
+    Note: If your application targets API level 13 or higher (as declared by the minSdkVersion and targetSdkVersion attributes), then you should also declare the "screenSize" configuration, because it also changes when a device switches between portrait and landscape orientations.
+    "screenSize" 	The current available screen size has changed. This represents a change in the currently available size, relative to the current aspect ratio, so will change when the user switches between landscape and portrait. However, if your application targets API level 12 or lower, then your activity always handles this configuration change itself (this configuration change does not restart your activity, even when running on an Android 3.2 or higher device).
+
+    Added in API level 13.
+    "smallestScreenSize" 	The physical screen size has changed. This represents a change in size regardless of orientation, so will only change when the actual physical screen size has changed such as switching to an external display. A change to this configuration corresponds to a change in the smallestWidth configuration. However, if your application targets API level 12 or lower, then your activity always handles this configuration change itself (this configuration change does not restart your activity, even when running on an Android 3.2 or higher device).
+
+    Added in API level 13.
+    "layoutDirection" 	The layout direction has changed. For example, changing from left-to-right (LTR) to right-to-left (RTL). Added in API level 17.
+
+    All of these configuration changes can impact the resource values seen by the application. Therefore, when onConfigurationChanged() is called, it will generally be necessary to again retrieve all resources (including view layouts, drawables, and so on) to correctly handle the change. 
+android:documentLaunchMode
+    Specifies how a new instance of an activity should be added to a task each time it is launched. This attribute permits the user to have multiple documents from the same application appear in the overview screen.
+
+    This attribute has four values which produce the following effects when the user opens a document with the application:
+    Value 	Description
+    "intoExisting" 	The activity reuses the existing task for the document. Using this value is the same as setting the FLAG_ACTIVITY_NEW_DOCUMENT flag, without setting the FLAG_ACTIVITY_MULTIPLE_TASK flag, as described in Using the Intent flag to add a task .
+    "always" 	The activity creates a new task for the document, even if the document is already opened. This is the same as setting both the FLAG_ACTIVITY_NEW_DOCUMENT and FLAG_ACTIVITY_MULTIPLE_TASK flags.
+    "none" 	The activity does not create a new task for the activity. This is the default value, which creates a new task only when FLAG_ACTIVITY_NEW_TASK is set. The overview screen treats the activity as it would by default: it displays a single task for the app, which resumes from whatever activity the user last invoked.
+    "never" 	This activity is not launched into a new document even if the Intent contains FLAG_ACTIVITY_NEW_DOCUMENT. Setting this overrides the behavior of the FLAG_ACTIVITY_NEW_DOCUMENT and FLAG_ACTIVITY_MULTIPLE_TASK flags, if either of these are set in the activity, and the overview screen displays a single task for the app, which resumes from whatever activity the user last invoked.
+
+    Note: For values other than "none" and "never" the activity must be defined with launchMode="standard". If this attribute is not specified, documentLaunchMode="none" is used.
 android:enabled
     Whether or not the activity can be instantiated by the system — "true" if it can be, and "false" if not. The default value is "true".
 
     The <application> element has its own enabled attribute that applies to all application components, including activities. The <application> and <activity> attributes must both be "true" (as they both are by default) for the system to be able to instantiate the activity. If either is "false", it cannot be instantiated. 
 android:excludeFromRecents
-    Whether or not the task initiated by this activity should be excluded from the list of recently used applications ("recent apps"). That is, when this activity is the root activity of a new task, this attribute determines whether the task should not appear in the list of recent apps. Set "true" if the task should be excluded from the list; set "false" if it should be included. The default value is "false".
+    Whether or not the task initiated by this activity should be excluded from the list of recently used applications, the overview screen. That is, when this activity is the root activity of a new task, this attribute determines whether the task should not appear in the list of recent apps. Set "true" if the task should be excluded from the list; set "false" if it should be included. The default value is "false".
 
 android:exported
     Whether or not the activity can be launched by components of other applications — "true" if it can be, and "false" if not. If "false", the activity can be launched only by components of the same application or applications with the same user ID.
@@ -84,7 +131,7 @@ android:launchMode
 
     Similarly, if you navigate up to an activity on the current stack, the behavior is determined by the parent activity's launch mode. If the parent activity has launch mode singleTop (or the up intent contains FLAG_ACTIVITY_CLEAR_TOP), the parent is brought to the top of the stack, and its state is preserved. The navigation intent is received by the parent activity's onNewIntent() method. If the parent activity has launch mode standard (and the up intent does not contain FLAG_ACTIVITY_CLEAR_TOP), the current activity and its parent are both popped off the stack, and a new instance of the parent activity is created to receive the navigation intent.
 
-    The "singleTask" and "singleInstance" modes also differ from each other in only one respect: A "singleTask" activity allows other activities to be part of its task. It's always at the root of its task, but other activities (necessarily "standard" and "singleTop" activities) can be launched into that task. A "singleInstance" activity, on the other hand, permits no other activities to be part of its task. It's the only activity in the task. If it starts another activity, that activity is assigned to a different task — as if FLAG_ACTIVITY_NEW_TASK was in the intent. 
+    The "singleTask" and "singleInstance" modes also differ from each other in only one respect: A "singleTask" activity allows other activities to be part of its task. It's always at the root of its task, but other activities (necessarily "standard" and "singleTop" activities) can be launched into that task. A "singleInstance" activity, on the other hand, permits no other activities to be part of its task. It's the only activity in the task. If it starts another activity, that activity is assigned to a different task — as if FLAG_ACTIVITY_NEW_TASK was in the intent.
     Use Cases 	Launch Mode 	Multiple Instances? 	Comments
     Normal launches for most activities 	"standard" 	Yes 	Default. The system always creates a new instance of the activity in the target task and routes the intent to it.
     "singleTop" 	Conditionally 	If an instance of the activity already exists at the top of the target task, the system routes the intent to that instance through a call to its onNewIntent() method, rather than creating a new instance of the activity.
@@ -97,6 +144,8 @@ android:launchMode
     Regardless of the launch mode that you choose, make sure to test the usability of the activity during launch and when navigating back to it from other activities and tasks using the Back button.
 
     For more information on launch modes and their interaction with Intent flags, see the Tasks and Back Stack document.
+android:maxRecents
+    The maximum number of tasks rooted at this activity in the overview screen. When this number of entries is reached, the system removes the least-recently used instance from the overview screen. Valid values are 1 through 50 (25 on low memory devices); zero is invalid. This must be an integer value, such as 50. The default value is 16. 
 android:multiprocess
     Whether an instance of the activity can be launched into the process of the component that started it — "true" if it can be, and "false" if not. The default value is "false".
 
@@ -110,7 +159,7 @@ android:name
 android:noHistory
     Whether or not the activity should be removed from the activity stack and finished (its finish() method called) when the user navigates away from it and it's no longer visible on screen — "true" if it should be finished, and "false" if not. The default value is "false".
 
-    A value of "true" means that the activity will not leave a historical trace. It will not remain in the activity stack for the task, so the user will not be able to return to it.
+    A value of "true" means that the activity will not leave a historical trace. It will not remain in the activity stack for the task, so the user will not be able to return to it. In this case, onActivityResult() is never called if you start another activity for a result from this activity.
 
     This attribute was introduced in API Level 3.
 android:parentActivityName
@@ -145,6 +194,10 @@ android:process
     If the name assigned to this attribute begins with a colon (':'), a new process, private to the application, is created when it's needed and the activity runs in that process. If the process name begins with a lowercase character, the activity will run in a global process of that name, provided that it has permission to do so. This allows components in different applications to share a process, reducing resource usage.
 
     The <application> element's process attribute can set a different default process name for all components. 
+android:relinquishTaskIdentity
+    Whether or not the activity relinquishes its task identifiers to an activity above it in the task stack. A task whose root activity has this attribute set to "true" replaces the base Intent with that of the next activity in the task. If the next activity also has this attribute set to "true" then it will yield the base Intent to any activity that it launches in the same task. This continues for each activity until an activity is encountered which has this attribute set to "false". The default value is "false".
+
+    This attribute set to "true" also permits the activity's use of the ActivityManager.TaskDescription to change labels, colors and icons in the overview screen.
 android:screenOrientation
     The orientation of the activity's display on the device.
 

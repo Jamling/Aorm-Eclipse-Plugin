@@ -38,6 +38,10 @@ public class NewActivityWizard extends NewComponentWizard {
         setWindowTitle("New Android Activity");
         page = new NewActivityWizardPage();
     }
+    public NewActivityWizard (String type){
+        setWindowTitle("New Android Activity");
+        page = new NewActivityWizardPage();
+    }
 
     @Override
     protected void updateManifest(AndroidManifest manifest) {

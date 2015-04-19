@@ -33,6 +33,7 @@ public class ComponentAttribute implements Comparable<ComponentAttribute> {
     private String[] formats;
     private int priority;
     private String tip;
+    private String achor;
 
     public String getName() {
         return name;
@@ -81,6 +82,14 @@ public class ComponentAttribute implements Comparable<ComponentAttribute> {
 
     public String getTip() {
         return tip;
+    }
+
+    public void setAchor(String achor) {
+        this.achor = achor;
+    }
+
+    public String getAchor() {
+        return achor;
     }
 
     public void setFormats(String options) {

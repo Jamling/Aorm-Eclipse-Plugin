@@ -1,6 +1,9 @@
 package cn.ieclipse.aorm.eclipse.test;
 
+import java.io.FileReader;
+
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -44,6 +47,7 @@ public class T extends Shell {
         super(display, SWT.SHELL_TRIM);
         setLayout(new GridLayout(1, false));
 
+        TipShell.setShow(true);
         Label lbl = new Label(this, SWT.NONE);
         lbl.setText("New Label");
         TipShell.enableFor(lbl, "label");
@@ -52,13 +56,27 @@ public class T extends Shell {
         txtText.setText("text");
         txtText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
                 1, 1));
-        TipShell.enableFor(txtText, "text");
+
+        String str = "";
+        try {
+            FileReader r = new FileReader("1.html");
+            char[] buf = new char[10240];
+            int len = r.read(buf);
+            str = new String(buf, 0, len);
+            TipShell.enableFor(txtText, str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Combo combo = new Combo(this, SWT.NONE);
         combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1,
                 1));
         TipShell.enableFor(combo, "combo");
         combo.setText("combo");
+        
+        Browser browser = new Browser(this, SWT.NONE);
+        browser.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        browser.setText(str);
 
         createContents();
     }

@@ -4,9 +4,11 @@ import java.io.File;
 import java.net.URL;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Control;
@@ -25,15 +27,18 @@ import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import cn.ieclipse.aorm.eclipse.AormPlugin;
+import cn.ieclipse.aorm.eclipse.helpers.ComponentAttribute;
 
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 
 public class TipShell extends Shell {
 
-    private Text text;
+    private Browser text;
     private static TipShell tip;
-    private String nodeName = "activity";
     private static boolean show = false;
+
+    private String nodeName = "activity";
+    private ComponentAttribute attr;
 
     /**
      * Set node name.
@@ -46,6 +51,11 @@ public class TipShell extends Shell {
         }
     }
 
+    /**
+     * Set whether show tooltip
+     * 
+     * @param show
+     */
     public static void setShow(boolean show) {
         TipShell.show = show;
     }
@@ -63,8 +73,9 @@ public class TipShell extends Shell {
         gridLayout.marginWidth = 0;
         setLayout(gridLayout);
 
-        text = new Text(this, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL
-                | SWT.MULTI);
+        // text = new Text(this, SWT.READ_ONLY | SWT.WRAP | SWT.V_SCROLL
+        // | SWT.MULTI);
+        text = new Browser(this, SWT.NONE);
         text.setBackground(SWTResourceManager
                 .getColor(SWT.COLOR_INFO_BACKGROUND));
         text.setForeground(SWTResourceManager
@@ -127,7 +138,6 @@ public class TipShell extends Shell {
         tbClose.setToolTipText("Close");
 
         setSize(300, 180);
-        setVisible(true);
 
         Label label = new Label(this, SWT.NONE);
         label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,
@@ -142,7 +152,7 @@ public class TipShell extends Shell {
         IWebBrowser browser;
         try {
             browser = support.getExternalBrowser();
-            browser.openURL(new URL(url));
+            browser.openURL(new URL(url + "#" + attr.getAchor()));
         } catch (PartInitException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -157,6 +167,13 @@ public class TipShell extends Shell {
     }
 
     public static void enableFor(final Control widget, final String text) {
+        ComponentAttribute attr = new ComponentAttribute();
+        attr.setTip(text);
+        enableFor(widget, attr);
+    }
+
+    public static void enableFor(final Control widget,
+            final ComponentAttribute attr) {
         Listener listener = new Listener() {
             private boolean focus = false;
 
@@ -166,31 +183,41 @@ public class TipShell extends Shell {
                         if (tip != null && !tip.isDisposed()) {
                             focus = tip.forceFocus();
                             focus = tip.text.setFocus();
+                            Rectangle r = tip.getBounds();
+                            int offset = 450;
+                            tip.setBounds(r.x - offset, r.y, r.width + offset,
+                                    r.height);
                         }
                     }
                 } else if (event.type == SWT.MouseHover) {
-                    if (text == null || text.trim().length() == 0
-                            || !TipShell.show) {
+                    if (hasTip(attr)) {
                         return;
                     }
                     if ((tip == null || tip.isDisposed())) {
                         tip = new TipShell(widget.getShell());
                     }
                     widget.setFocus();
-                    tip.setVisible(true);
-                    tip.text.setText(text);
+                    tip.text.setText(attr.getTip());
                     Point p = widget.getShell().toDisplay(widget.getBounds().x,
                             widget.getBounds().y);
                     p = getLoc(widget, new Point(event.x, event.y));
                     int x = p.x;
                     int y = p.y + 5;
                     tip.setLocation(x, y);
+                    tip.setVisible(true);
                     tip.pack();
                 } else if (event.type == SWT.MouseExit) {
                     if (!focus && tip != null && !tip.isDisposed()) {
                         tip.setVisible(false);
                     }
                 }
+            }
+
+            private boolean hasTip(ComponentAttribute attr) {
+                boolean flag = !TipShell.show || attr == null
+                        || attr.getTip() == null
+                        || attr.getTip().trim().length() == 0;
+                return !flag;
             }
 
             private Point getLoc(Control widget, Point pt) {

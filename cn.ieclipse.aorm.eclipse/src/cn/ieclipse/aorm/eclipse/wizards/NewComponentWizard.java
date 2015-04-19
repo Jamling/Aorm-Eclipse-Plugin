@@ -40,6 +40,7 @@ import cn.ieclipse.aorm.eclipse.helpers.Status;
 @SuppressWarnings("restriction")
 public class NewComponentWizard extends NewElementWizard {
     protected NewComponentWizardPage page = null;
+    protected EditComponentWizardPage page1 = null;
 
     /**
      * Creates a new android component wizard. set default title and page icon
@@ -48,6 +49,10 @@ public class NewComponentWizard extends NewElementWizard {
         setWindowTitle("New Android Component Wizard");
         setDefaultPageImageDescriptor(AormPlugin
                 .getImageDescriptor(ImageConstants.LARGE_ACTIVITY_ICON));
+    }
+    
+    public NewComponentWizard(String type) {
+        setWindowTitle("Test New Android Component Wizard");
     }
 
     /*
