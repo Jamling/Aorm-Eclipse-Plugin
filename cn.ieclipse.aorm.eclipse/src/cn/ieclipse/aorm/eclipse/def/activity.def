@@ -6,10 +6,11 @@
           android:clearTaskOnLaunch=["true" | "false"]
           android:configChanges=["mcc", "mnc", "locale",
                                  "touchscreen", "keyboard", "keyboardHidden",
-                                 "navigation", "screenLayout", "fontScale", "uiMode",
-                                 "orientation", "screenSize", "smallestScreenSize"]
-          android:documentLaunchMode=["intoExisting", "always",
-                                  "none", "never"]
+                                 "navigation", "screenLayout", "fontScale",
+                                 "uiMode", "orientation", "screenSize",
+                                 "smallestScreenSize"]
+          android:documentLaunchMode=["intoExisting" | "always" |
+                                  "none" | "never"]
           android:enabled=["true" | "false"]
           android:excludeFromRecents=["true" | "false"]
           android:exported=["true" | "false"]
@@ -42,7 +43,7 @@
                                        "stateUnchanged", "stateHidden",
                                        "stateAlwaysHidden", "stateVisible",
                                        "stateAlwaysVisible", "adjustUnspecified",
-                                       "adjustResize", "adjustPan"] >  
+                                       "adjustResize", "adjustPan"] >   
     <intent-filter />
     <meta-data />
 </activity>

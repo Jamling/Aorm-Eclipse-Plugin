@@ -90,6 +90,7 @@ public class ComponentAttributeTipHelper {
             DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
             fac.setIgnoringElementContentWhitespace(true);
             fac.setIgnoringComments(true);
+            fac.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, false);
             Document doc = fac.newDocumentBuilder().parse(
                     AormPlugin.class.getResourceAsStream("tip/" + nodeName
                             + ".xml"));
@@ -118,7 +119,8 @@ public class ComponentAttributeTipHelper {
                     ByteArrayOutputStream oos = new ByteArrayOutputStream();
                     result.setOutputStream(oos);
                     transformer.transform(source, result);
-                    attr.setTip(oos.toString());
+                    attr.setTip(oos.toString().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", ""));
+                    System.out.println(attr.getTip());
                 }
             }
         } catch (Exception e) {

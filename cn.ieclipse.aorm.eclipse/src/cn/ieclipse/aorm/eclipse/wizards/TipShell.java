@@ -30,6 +30,7 @@ import cn.ieclipse.aorm.eclipse.AormPlugin;
 import cn.ieclipse.aorm.eclipse.helpers.ComponentAttribute;
 
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import org.eclipse.swt.widgets.Button;
 
 public class TipShell extends Shell {
 
@@ -68,7 +69,7 @@ public class TipShell extends Shell {
      */
     public TipShell(Shell shell) {
         super(shell, SWT.ON_TOP | SWT.TOOL);
-        GridLayout gridLayout = new GridLayout(2, false);
+        GridLayout gridLayout = new GridLayout(3, false);
         gridLayout.marginHeight = 0;
         gridLayout.marginWidth = 0;
         setLayout(gridLayout);
@@ -80,7 +81,7 @@ public class TipShell extends Shell {
                 .getColor(SWT.COLOR_INFO_BACKGROUND));
         text.setForeground(SWTResourceManager
                 .getColor(SWT.COLOR_INFO_FOREGROUND));
-        GridData gd_text = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+        GridData gd_text = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
         gd_text.widthHint = 300;
         gd_text.heightHint = 180;
         text.setLayoutData(gd_text);
@@ -108,7 +109,7 @@ public class TipShell extends Shell {
         });
         tbLocal.setImage(SWTResourceManager.getImage(
                 org.eclipse.jdt.ui.ISharedImages.class,
-                "/icons/full/elcl16/open_browser.gif"));
+                "/icons/full/elcl16/open_browser.png"));
         tbLocal.setToolTipText("Open in Local SDK docs");
 
         ToolItem tbSite = new ToolItem(toolBar, SWT.NONE);
@@ -121,10 +122,10 @@ public class TipShell extends Shell {
         });
         tbSite.setImage(SWTResourceManager.getImage(
                 org.eclipse.jdt.ui.ISharedImages.class,
-                "/icons/full/elcl16/open_browser.gif"));
+                "/icons/full/elcl16/open_browser.png"));
         tbSite.setToolTipText("Open in Android Developer Site");
 
-        ToolItem tbClose = new ToolItem(toolBar, SWT.NONE);
+        ToolItem tbClose = new ToolItem(toolBar, SWT.PUSH);
         tbClose.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -133,11 +134,11 @@ public class TipShell extends Shell {
                 }
             }
         });
-        tbClose.setImage(ResourceManager.getPluginImage(AormPlugin.PLUGIN_ID,
-                "res/delete.png"));
+        tbClose.setImage(ResourceManager.getPluginImage(AormPlugin.PLUGIN_ID, "res/delete.png"));
         tbClose.setToolTipText("Close");
 
         setSize(300, 180);
+        new Label(this, SWT.NONE);
 
         Label label = new Label(this, SWT.NONE);
         label.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false,

@@ -208,14 +208,20 @@ public class EditComponentWizardPage extends WizardPage {
         final ToolItem tbTip = new ToolItem(toolBar, SWT.CHECK);
         tbTip.setImage(SWTResourceManager.getImage(
                 org.eclipse.jdt.ui.ISharedImages.class,
-                "/icons/full/obj16/never_translate.gif"));
-        tbTip.setHotImage(SWTResourceManager.getImage(
-                org.eclipse.jdt.ui.ISharedImages.class,
-                "/icons/full/obj16/translate.gif"));
+                "/icons/full/obj16/translate.png"));
         tbTip.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 TipShell.setShow(tbTip.getSelection());
+                if (tbTip.getSelection()) {
+                    tbTip.setImage(SWTResourceManager.getImage(
+                            org.eclipse.jdt.ui.ISharedImages.class,
+                            "/icons/full/obj16/never_translate.png"));
+                } else {
+                    tbTip.setImage(SWTResourceManager.getImage(
+                            org.eclipse.jdt.ui.ISharedImages.class,
+                            "/icons/full/obj16/translate.png"));
+                }
             }
         });
 
